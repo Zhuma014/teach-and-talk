@@ -4,876 +4,389 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teach & Talk: Предметный микс</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink: #1a1a2e;
-  --cream: #f7f3eb;
-  --gold: #c9a84c;
-  --gold-light: #f0d98a;
-  --teal: #1e6b6b;
-  --teal-light: #4aada8;
-  --rust: #c0392b;
-  --soft: #e8e0d0;
-  --white: #fffdf7;
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#0d0d1a;--cream:#f7f3eb;--gold:#f0c040;--gold2:#c9a020;
+  --teal:#00c9b1;--teal2:#007a6e;--rust:#ff4e42;--purple:#9b59f5;--white:#fffdf7;
 }
-
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  font-family: 'Montserrat', sans-serif;
-  background: var(--cream);
-  color: var(--ink);
-  overflow-x: hidden;
-}
-
-/* ── SLIDE COUNTER SIDEBAR ── */
-.sidebar {
-  position: fixed;
-  left: 0; top: 50%;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px 8px;
-  background: rgba(26,26,46,0.07);
-  border-radius: 0 12px 12px 0;
-  backdrop-filter: blur(4px);
-}
-.dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--soft);
-  border: 2px solid var(--ink);
-  cursor: pointer;
-  transition: all .3s;
-}
-.dot.active { background: var(--gold); transform: scale(1.4); }
-
-/* ── PROGRESS BAR ── */
-.progress {
-  position: fixed;
-  top: 0; left: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--gold), var(--teal-light));
-  width: 0%;
-  transition: width .4s;
-  z-index: 200;
-}
-
-/* ── SLIDE BASE ── */
-.slide {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 60px 80px 60px 100px;
-  position: relative;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity .7s ease, transform .7s ease;
-}
-.slide.visible { opacity: 1; transform: translateY(0); }
-
-/* decorative rule */
-.slide::before {
-  content: '';
-  position: absolute;
-  left: 60px; top: 15%; bottom: 15%;
-  width: 3px;
-  background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-  border-radius: 2px;
-}
-
-/* ═══════════════ SLIDE 1 — HERO ═══════════════ */
-#slide1 {
-  background: var(--ink);
-  color: var(--cream);
-  min-height: 100vh;
-  align-items: flex-start;
-  justify-content: center;
-}
-#slide1::before { display: none; }
-
-.slide1-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(201,168,76,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(30,107,107,0.25) 0%, transparent 55%);
-  pointer-events: none;
-}
-
-/* Apple half visual */
-.apple-visual {
-  position: absolute;
-  right: 8%;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 9rem;
-  opacity: .13;
-  filter: grayscale(1);
-  animation: softPulse 4s ease-in-out infinite alternate;
-  user-select: none;
-}
-@keyframes softPulse {
-  from { transform: translateY(-50%) scale(1); }
-  to   { transform: translateY(-52%) scale(1.06); }
-}
-
-.tag {
-  display: inline-block;
-  border: 1.5px solid var(--gold);
-  color: var(--gold);
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  padding: 5px 14px;
-  border-radius: 3px;
-  margin-bottom: 24px;
-  animation: fadeIn 1s both;
-}
-
-#slide1 h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.8rem, 5.5vw, 5rem);
-  font-weight: 900;
-  line-height: 1.08;
-  max-width: 680px;
-  animation: slideRight .9s .15s both;
-}
-#slide1 h1 em { color: var(--gold); font-style: normal; }
-
-.subtitle-line {
-  margin-top: 20px;
-  font-size: 1rem;
-  font-weight: 500;
-  color: rgba(247,243,235,.65);
-  letter-spacing: 1px;
-  animation: fadeIn 1s .4s both;
-}
-.subtitle-line strong { color: var(--teal-light); font-weight: 700; }
-
-.meta-row {
-  display: flex;
-  gap: 32px;
-  margin-top: 40px;
-  flex-wrap: wrap;
-  animation: fadeIn 1s .6s both;
-}
-.meta-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.meta-label { font-size: .65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
-.meta-value { font-size: .9rem; font-weight: 600; color: var(--cream); }
-
-/* team badges */
-.team-grid {
-  display: flex;
-  gap: 14px;
-  margin-top: 44px;
-  flex-wrap: wrap;
-  animation: fadeIn 1s .8s both;
-}
-.team-badge {
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(201,168,76,.3);
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: .78rem;
-  font-weight: 600;
-  color: var(--cream);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background .25s, border-color .25s;
-  cursor: default;
-}
-.team-badge:hover { background: rgba(201,168,76,.15); border-color: var(--gold); }
-.team-badge span { font-size: 1.2rem; }
-
-/* ═══════════════ SLIDE 2 — КОМАНДА ═══════════════ */
-#slide2 { background: var(--white); }
-
-.slide-label {
-  font-size: .65rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 14px;
-}
-
-.slide-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  line-height: 1.15;
-  margin-bottom: 36px;
-  max-width: 680px;
-}
-.slide-title em { color: var(--teal); font-style: normal; }
-
-.roles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 18px;
-  max-width: 860px;
-}
-.role-card {
-  background: var(--cream);
-  border-radius: 14px;
-  padding: 22px 20px;
-  border-left: 4px solid var(--gold);
-  transition: transform .25s, box-shadow .25s;
-  cursor: default;
-}
-.role-card:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(0,0,0,.1); }
-.role-card:nth-child(2) { border-color: var(--teal); }
-.role-card:nth-child(3) { border-color: var(--rust); }
-.role-card:nth-child(4) { border-color: #7b3f9e; }
-.role-icon { font-size: 1.8rem; margin-bottom: 10px; }
-.role-name {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  font-size: 1rem;
-  margin-bottom: 6px;
-}
-.role-desc { font-size: .8rem; color: #666; font-weight: 500; line-height: 1.5; }
-
-/* ═══════════════ SLIDE 3 — ИДЕЯ ═══════════════ */
-#slide3 {
-  background: var(--teal);
-  color: var(--cream);
-}
-#slide3::before { background: linear-gradient(to bottom, transparent, var(--gold-light), transparent); }
-#slide3 .slide-label { color: var(--gold-light); }
-#slide3 .slide-title { color: var(--white); }
-
-.big-quote {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.3rem, 2.8vw, 2.1rem);
-  line-height: 1.5;
-  max-width: 720px;
-  color: var(--cream);
-  border-left: 4px solid var(--gold);
-  padding-left: 24px;
-  margin: 20px 0 32px;
-  font-style: italic;
-}
-
-.subject-pairs {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-top: 14px;
-}
-.pair-chip {
-  background: rgba(255,255,255,.13);
-  border: 1px solid rgba(255,255,255,.25);
-  border-radius: 60px;
-  padding: 8px 18px;
-  font-size: .82rem;
-  font-weight: 600;
-  color: var(--cream);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: background .2s;
-}
-.pair-chip:hover { background: rgba(201,168,76,.3); }
-.pair-chip .plus { color: var(--gold-light); font-weight: 700; }
-
-/* ═══════════════ SLIDE 4 — МЕТОДИКА ═══════════════ */
-#slide4 { background: var(--cream); }
-
-.timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  max-width: 820px;
-  margin-top: 8px;
-}
-.tl-item {
-  display: flex;
-  gap: 0;
-  position: relative;
-}
-.tl-time-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 64px;
-  flex-shrink: 0;
-}
-.tl-dot {
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  background: var(--gold);
-  border: 3px solid var(--cream);
-  box-shadow: 0 0 0 2px var(--gold);
-  flex-shrink: 0;
-  margin-top: 4px;
-  z-index: 1;
-}
-.tl-item:nth-child(2) .tl-dot { background: var(--teal); box-shadow: 0 0 0 2px var(--teal); }
-.tl-item:nth-child(3) .tl-dot { background: var(--rust); box-shadow: 0 0 0 2px var(--rust); }
-.tl-line {
-  width: 2px;
-  background: linear-gradient(to bottom, var(--gold), var(--soft));
-  flex: 1;
-  min-height: 24px;
-}
-.tl-content {
-  padding: 0 0 32px 20px;
-  flex: 1;
-}
-.tl-tag {
-  display: inline-block;
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #fff;
-  background: var(--gold);
-  border-radius: 3px;
-  padding: 2px 8px;
-  margin-bottom: 6px;
-}
-.tl-item:nth-child(2) .tl-tag { background: var(--teal); }
-.tl-item:nth-child(3) .tl-tag { background: var(--rust); }
-.tl-heading {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-.tl-body { font-size: .86rem; color: #555; line-height: 1.7; font-weight: 500; }
-.tl-body strong { color: var(--ink); }
-
-/* ═══════════════ SLIDE 5 — ДРОБИ ═══════════════ */
-#slide5 {
-  background: var(--ink);
-  color: var(--cream);
-}
-#slide5::before { background: linear-gradient(to bottom, transparent, var(--teal-light), transparent); }
-#slide5 .slide-label { color: var(--teal-light); }
-#slide5 .slide-title { color: var(--white); }
-
-.fractions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-  max-width: 860px;
-  margin-top: 8px;
-}
-.frac-card {
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 16px;
-  padding: 24px 22px;
-  transition: background .25s, border-color .25s;
-  cursor: default;
-}
-.frac-card:hover { background: rgba(255,255,255,.11); border-color: var(--gold); }
-
-.frac-display {
-  font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  font-weight: 900;
-  color: var(--gold);
-  margin-bottom: 12px;
-  line-height: 1;
-  position: relative;
-  display: inline-block;
-}
-
-.frac-reading {
-  font-size: .82rem;
-  font-weight: 700;
-  color: var(--teal-light);
-  letter-spacing: .5px;
-  margin-bottom: 10px;
-}
-.frac-struct { font-size: .78rem; color: rgba(247,243,235,.7); line-height: 1.7; }
-.frac-struct .correct { color: var(--teal-light); font-weight: 700; }
-.frac-struct .wrong { color: #ff7b7b; text-decoration: line-through; }
-.frac-math {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,.1);
-  font-size: .75rem;
-  color: rgba(247,243,235,.55);
-  line-height: 1.6;
-}
-
-/* interactive highlight */
-.frac-card.active-card { background: rgba(201,168,76,.12); border-color: var(--gold); }
-
-/* ═══════════════ SLIDE 6 — ПРИЁМЫ ═══════════════ */
-#slide6 { background: var(--white); }
-
-.tricks-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-  max-width: 860px;
-}
-.trick-card {
-  background: var(--cream);
-  border-radius: 14px;
-  padding: 24px 20px;
-  position: relative;
-  overflow: hidden;
-  cursor: default;
-  transition: transform .25s, box-shadow .25s;
-}
-.trick-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 4px;
-  background: var(--gold);
-  border-radius: 14px 14px 0 0;
-}
-.trick-card:nth-child(2)::before { background: var(--teal); }
-.trick-card:nth-child(3)::before { background: var(--rust); }
-.trick-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.1); }
-.trick-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 3.5rem;
-  font-weight: 900;
-  color: rgba(0,0,0,.05);
-  position: absolute;
-  bottom: 8px; right: 14px;
-  line-height: 1;
-  user-select: none;
-}
-.trick-icon { font-size: 1.8rem; margin-bottom: 10px; }
-.trick-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-.trick-desc { font-size: .8rem; color: #666; line-height: 1.6; font-weight: 500; }
-
-/* ═══════════════ SLIDE 7 — РЕЗУЛЬТАТЫ ═══════════════ */
-#slide7 {
-  background: linear-gradient(135deg, var(--teal) 0%, var(--ink) 100%);
-  color: var(--cream);
-}
-#slide7::before { background: linear-gradient(to bottom, transparent, var(--gold), transparent); }
-#slide7 .slide-label { color: var(--gold-light); }
-#slide7 .slide-title { color: var(--white); }
-
-.results-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 700px;
-}
-.result-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  background: rgba(255,255,255,.08);
-  border-radius: 12px;
-  padding: 18px 20px;
-  border: 1px solid rgba(255,255,255,.12);
-  transition: background .25s;
-  cursor: default;
-}
-.result-item:hover { background: rgba(255,255,255,.14); }
-.result-check {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  font-size: .9rem;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-.result-text { font-size: .9rem; font-weight: 500; line-height: 1.6; }
-
-/* footer */
-.slide7-footer {
-  margin-top: 44px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,.15);
-  font-size: .78rem;
-  color: rgba(247,243,235,.5);
-}
-.school-badge {
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.2);
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-weight: 700;
-  font-size: .78rem;
-  color: var(--gold-light);
-}
-
-/* ═══════════════ ANIMATIONS ═══════════════ */
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-@keyframes slideRight {
-  from { opacity:0; transform: translateX(-30px); }
-  to   { opacity:1; transform: translateX(0); }
-}
-
-/* staggered children */
-.slide.visible .role-card,
-.slide.visible .tl-item,
-.slide.visible .frac-card,
-.slide.visible .trick-card,
-.slide.visible .result-item,
-.slide.visible .pair-chip,
-.slide.visible .team-badge {
-  animation: fadeUp .5s both;
-}
-.slide.visible .role-card:nth-child(1),
-.slide.visible .tl-item:nth-child(1),
-.slide.visible .frac-card:nth-child(1),
-.slide.visible .trick-card:nth-child(1),
-.slide.visible .result-item:nth-child(1),
-.slide.visible .pair-chip:nth-child(1),
-.slide.visible .team-badge:nth-child(1) { animation-delay: .1s; }
-.slide.visible .role-card:nth-child(2),
-.slide.visible .tl-item:nth-child(2),
-.slide.visible .frac-card:nth-child(2),
-.slide.visible .trick-card:nth-child(2),
-.slide.visible .result-item:nth-child(2),
-.slide.visible .pair-chip:nth-child(2),
-.slide.visible .team-badge:nth-child(2) { animation-delay: .2s; }
-.slide.visible .role-card:nth-child(3),
-.slide.visible .tl-item:nth-child(3),
-.slide.visible .frac-card:nth-child(3),
-.slide.visible .trick-card:nth-child(3),
-.slide.visible .result-item:nth-child(3),
-.slide.visible .pair-chip:nth-child(3),
-.slide.visible .team-badge:nth-child(3) { animation-delay: .3s; }
-.slide.visible .role-card:nth-child(4),
-.slide.visible .frac-card:nth-child(4),
-.slide.visible .result-item:nth-child(4),
-.slide.visible .pair-chip:nth-child(4),
-.slide.visible .team-badge:nth-child(4) { animation-delay: .4s; }
-.slide.visible .pair-chip:nth-child(5) { animation-delay: .5s; }
-@keyframes fadeUp {
-  from { opacity:0; transform: translateY(18px); }
-  to   { opacity:1; transform: translateY(0); }
-}
-
-/* ═══════════════ RESPONSIVE ═══════════════ */
-@media (max-width: 768px) {
-  .slide { padding: 50px 24px 50px 40px; }
-  .slide::before { left: 18px; }
-  .sidebar { display: none; }
-  .apple-visual { font-size: 5rem; opacity: .08; }
-  #slide1 { padding: 60px 24px; }
-}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',sans-serif;background:var(--ink);color:var(--cream);overflow-x:hidden}
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:999;width:0%;transition:width .3s}
+#nav{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:500;display:flex;flex-direction:column;gap:10px}
+.ndot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.3);cursor:pointer;transition:all .3s;position:relative}
+.ndot::after{content:attr(data-label);position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.7);color:#fff;font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:4px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+.ndot:hover::after{opacity:1}
+.ndot.on{background:var(--gold);transform:scale(1.5);border-color:var(--gold)}
+.slide{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:70px 80px;position:relative;z-index:10;overflow:hidden}
+/* SLIDE 1 */
+#s1{background:transparent;align-items:flex-start}
+.hero-eyebrow{font-size:.68rem;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;opacity:0;animation:fadeUp .8s .3s forwards}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,6rem);font-weight:900;line-height:1.05;max-width:800px;opacity:0;animation:fadeUp .9s .5s forwards}
+.hero-title .hl{color:var(--gold);font-style:italic;position:relative;display:inline-block}
+.hero-title .hl::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:3px;background:var(--gold);animation:lineGrow 1s 1.4s forwards}
+@keyframes lineGrow{to{width:100%}}
+.hero-sub{margin-top:20px;font-size:1.05rem;font-weight:500;color:rgba(247,243,235,.6);opacity:0;animation:fadeUp .8s .9s forwards;max-width:580px;line-height:1.6}
+.hero-sub strong{color:var(--teal)}
+.meta-chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;opacity:0;animation:fadeUp .8s 1.1s forwards}
+.chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:7px 16px;font-size:.75rem;font-weight:700;color:var(--cream);display:flex;align-items:center;gap:6px;transition:all .25s}
+.chip:hover{background:rgba(240,192,64,.15);border-color:var(--gold)}
+.apple-anim{position:absolute;right:6%;top:50%;transform:translateY(-50%);opacity:0;animation:appleIn 1.2s 1.4s forwards}
+@keyframes appleIn{from{opacity:0;transform:translateY(-40%) scale(.6) rotate(-20deg)}to{opacity:1;transform:translateY(-50%) scale(1) rotate(0deg)}}
+.apple-half{font-size:clamp(8rem,14vw,15rem);filter:drop-shadow(0 0 60px rgba(240,192,64,.3));animation:floatApple 4s ease-in-out infinite alternate}
+@keyframes floatApple{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-20px) rotate(3deg)}}
+.team-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:40px;opacity:0;animation:fadeUp .8s 1.4s forwards}
+.tbadge{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 18px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:8px;cursor:default;transition:all .3s;position:relative;overflow:hidden}
+.tbadge::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.06));transform:translateX(-100%);transition:transform .4s}
+.tbadge:hover::before{transform:translateX(0)}
+.tbadge:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 30px rgba(240,192,64,.15)}
+.tbadge .ico{font-size:1.3rem}
+/* SLIDE 2 */
+#s2{background:linear-gradient(160deg,#0f1129 0%,#0d0d1a 100%)}
+.slide-tag{font-size:.62rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;opacity:0;transform:translateY(20px);transition:all .7s}
+.slide-h{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;line-height:1.1;margin-bottom:32px;max-width:700px;opacity:0;transform:translateY(20px);transition:all .7s .15s}
+.slide-h em{color:var(--teal);font-style:normal}
+.is-visible .slide-tag,.is-visible .slide-h{opacity:1;transform:translateY(0)}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;max-width:900px}
+.rcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:24px 20px;position:relative;overflow:hidden;cursor:default;transform:translateY(40px) scale(.95);opacity:0;transition:transform .5s,opacity .5s,box-shadow .3s,border-color .3s}
+.rcard.shown{transform:translateY(0) scale(1);opacity:1}
+.rcard:hover{box-shadow:0 20px 60px rgba(0,0,0,.4);border-color:var(--gold)}
+.rcard-glow{position:absolute;inset:0;border-radius:18px;opacity:0;transition:opacity .4s;pointer-events:none}
+.rcard:hover .rcard-glow{opacity:1}
+.rcard:nth-child(1) .rcard-glow{background:radial-gradient(circle at 30% 30%,rgba(240,192,64,.12),transparent 60%)}
+.rcard:nth-child(2) .rcard-glow{background:radial-gradient(circle at 30% 30%,rgba(0,201,177,.12),transparent 60%)}
+.rcard:nth-child(3) .rcard-glow{background:radial-gradient(circle at 30% 30%,rgba(255,78,66,.12),transparent 60%)}
+.rcard:nth-child(4) .rcard-glow{background:radial-gradient(circle at 30% 30%,rgba(155,89,245,.12),transparent 60%)}
+.rcard-icon{font-size:2rem;margin-bottom:12px;display:block}
+.rcard-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:6px;color:var(--cream)}
+.rcard-desc{font-size:.78rem;color:rgba(247,243,235,.55);line-height:1.6;font-weight:500}
+.rcard-accent{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 18px 18px}
+.rcard:nth-child(1) .rcard-accent{background:var(--gold)}
+.rcard:nth-child(2) .rcard-accent{background:var(--teal)}
+.rcard:nth-child(3) .rcard-accent{background:var(--rust)}
+.rcard:nth-child(4) .rcard-accent{background:var(--purple)}
+/* SLIDE 3 */
+#s3{background:linear-gradient(135deg,#001a18 0%,#0d0d1a 100%)}
+.big-q{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2.2rem);font-style:italic;line-height:1.5;max-width:740px;color:var(--cream);border-left:4px solid var(--teal);padding-left:28px;margin:18px 0 32px;transform:translateX(-30px);opacity:0;transition:all .8s .2s}
+.big-q.shown{transform:translateX(0);opacity:1}
+.pairs-grid{display:flex;gap:12px;flex-wrap:wrap;max-width:800px}
+.pair{background:rgba(0,201,177,.08);border:1px solid rgba(0,201,177,.2);border-radius:60px;padding:9px 20px;font-size:.82rem;font-weight:700;display:flex;align-items:center;gap:6px;transform:scale(.8);opacity:0;transition:all .4s;cursor:default}
+.pair.shown{transform:scale(1);opacity:1}
+.pair:hover{background:rgba(0,201,177,.18);border-color:var(--teal);transform:scale(1.05)}
+.pair .plus{color:var(--teal);font-size:1.1rem;font-weight:900}
+/* SLIDE 4 */
+#s4{background:linear-gradient(160deg,#0d0d1a 0%,#0f1020 100%)}
+.timeline{max-width:860px}
+.tl{display:flex;gap:0;margin-bottom:0;opacity:0;transform:translateX(-40px);transition:all .6s}
+.tl.shown{opacity:1;transform:translateX(0)}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:56px;flex-shrink:0}
+.tl-node{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.7rem;font-weight:800;color:#000;z-index:1}
+.tl:nth-child(1) .tl-node{background:var(--gold)}
+.tl:nth-child(2) .tl-node{background:var(--teal)}
+.tl:nth-child(3) .tl-node{background:var(--rust)}
+.tl-wire{width:2px;flex:1;min-height:20px;background:rgba(255,255,255,.08)}
+.tl-body{padding:0 0 28px 20px;flex:1}
+.tl-badge{display:inline-flex;align-items:center;gap:6px;font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:3px;margin-bottom:8px}
+.tl:nth-child(1) .tl-badge{background:rgba(240,192,64,.15);color:var(--gold)}
+.tl:nth-child(2) .tl-badge{background:rgba(0,201,177,.15);color:var(--teal)}
+.tl:nth-child(3) .tl-badge{background:rgba(255,78,66,.15);color:var(--rust)}
+.tl-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:8px}
+.tl-text{font-size:.82rem;color:rgba(247,243,235,.55);line-height:1.8;font-weight:500}
+.tl-text strong{color:var(--cream)}
+/* SLIDE 5 */
+#s5{background:radial-gradient(ellipse 80% 70% at 50% 50%,#0a1a28 0%,#0d0d1a 100%)}
+.fracs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;max-width:900px}
+.fc{perspective:1000px;cursor:pointer}
+.fc-inner{position:relative;width:100%;transition:transform .7s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;min-height:220px}
+.fc:hover .fc-inner,.fc.active .fc-inner{transform:rotateY(180deg)}
+.fc-front,.fc-back{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px 24px;backface-visibility:hidden;position:absolute;inset:0}
+.fc-back{transform:rotateY(180deg);background:rgba(0,30,40,.9);border-color:var(--teal);display:flex;flex-direction:column;justify-content:center}
+.fc:nth-child(2) .fc-back{border-color:var(--gold)}
+.fc:nth-child(3) .fc-back{border-color:var(--rust)}
+.fc-glow{position:absolute;inset:0;border-radius:20px;pointer-events:none;opacity:0;transition:opacity .4s}
+.fc:hover .fc-glow,.fc.active .fc-glow{opacity:1}
+.fc:nth-child(1) .fc-glow{background:radial-gradient(circle at 50% 0%,rgba(0,201,177,.2),transparent 60%)}
+.fc:nth-child(2) .fc-glow{background:radial-gradient(circle at 50% 0%,rgba(240,192,64,.2),transparent 60%)}
+.fc:nth-child(3) .fc-glow{background:radial-gradient(circle at 50% 0%,rgba(255,78,66,.2),transparent 60%)}
+.frac-num{font-family:'Playfair Display',serif;font-size:4.5rem;font-weight:900;line-height:1;margin-bottom:14px}
+.fc:nth-child(1) .frac-num{color:var(--teal)}
+.fc:nth-child(2) .frac-num{color:var(--gold)}
+.fc:nth-child(3) .frac-num{color:var(--rust)}
+.frac-read{font-size:.9rem;font-weight:700;color:var(--cream);margin-bottom:8px}
+.frac-hint{font-size:.72rem;color:rgba(247,243,235,.4);font-weight:500}
+.fb-label{font-size:.62rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
+.fc:nth-child(2) .fb-label{color:var(--gold)}
+.fc:nth-child(3) .fb-label{color:var(--rust)}
+.fb-row{display:flex;flex-direction:column;gap:6px;font-size:.8rem;line-height:1.6}
+.fb-row .ok{color:var(--teal)}
+.fc:nth-child(2) .fb-row .ok{color:var(--gold)}
+.fc:nth-child(3) .fb-row .ok{color:var(--rust)}
+.fb-row .bad{color:#ff7b7b;text-decoration:line-through;opacity:.7}
+.fb-math{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);font-size:.72rem;color:rgba(247,243,235,.4)}
+.frac-tip{margin-top:20px;max-width:800px;font-size:.82rem;color:rgba(247,243,235,.4);line-height:1.7;font-style:italic;opacity:0;transition:opacity .8s .5s}
+.frac-tip.shown{opacity:1}
+/* SLIDE 6 */
+#s6{background:linear-gradient(160deg,#0d0d1a 0%,#100820 100%)}
+.tricks{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;max-width:900px}
+.trk{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:26px 22px;position:relative;overflow:hidden;transform:translateY(50px);opacity:0;transition:all .6s;cursor:default}
+.trk.shown{transform:translateY(0);opacity:1}
+.trk:hover{border-color:rgba(255,255,255,.2);transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.trk-num{position:absolute;right:16px;bottom:10px;font-family:'Playfair Display',serif;font-size:5rem;font-weight:900;color:rgba(255,255,255,.04);line-height:1;user-select:none}
+.trk-ico{font-size:2rem;margin-bottom:14px;display:block}
+.trk-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.trk-desc{font-size:.8rem;color:rgba(247,243,235,.5);line-height:1.65;font-weight:500}
+.trk-bar{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 18px 18px;transform:scaleX(0);transform-origin:left;transition:transform .6s .4s}
+.trk.shown .trk-bar{transform:scaleX(1)}
+.trk:nth-child(1) .trk-bar{background:linear-gradient(90deg,var(--gold),transparent)}
+.trk:nth-child(2) .trk-bar{background:linear-gradient(90deg,var(--teal),transparent)}
+.trk:nth-child(3) .trk-bar{background:linear-gradient(90deg,var(--rust),transparent)}
+/* SLIDE 7 */
+#s7{background:linear-gradient(135deg,#050d10 0%,#0d0d1a 100%)}
+.results{display:flex;flex-direction:column;gap:14px;max-width:760px}
+.res{display:flex;align-items:flex-start;gap:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px 20px;transform:translateX(-30px);opacity:0;transition:all .6s;cursor:default}
+.res.shown{transform:translateX(0);opacity:1}
+.res:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+.res-icon{width:36px;height:36px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;margin-top:2px;box-shadow:0 0 20px rgba(240,192,64,.3)}
+.res-text{font-size:.88rem;font-weight:500;line-height:1.65;color:rgba(247,243,235,.8)}
+.s7-footer{margin-top:44px;display:flex;align-items:center;gap:16px;padding-top:24px;border-top:1px solid rgba(255,255,255,.07);opacity:0;transition:opacity .8s .6s}
+.s7-footer.shown{opacity:1}
+.school-chip{background:rgba(240,192,64,.1);border:1px solid rgba(240,192,64,.3);border-radius:8px;padding:8px 16px;font-size:.72rem;font-weight:800;color:var(--gold);letter-spacing:.5px}
+.s7-footer span{font-size:.78rem;color:rgba(247,243,235,.3)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){.slide{padding:50px 24px}#nav{display:none}.apple-anim{display:none}.hero-title{font-size:2.8rem}}
 </style>
 </head>
 <body>
-
-<div class="progress" id="progress"></div>
-
-<!-- Sidebar dots -->
-<nav class="sidebar" id="sidebar">
-  <div class="dot active" onclick="scrollToSlide(1)" title="Титул"></div>
-  <div class="dot" onclick="scrollToSlide(2)" title="Команда"></div>
-  <div class="dot" onclick="scrollToSlide(3)" title="Идея"></div>
-  <div class="dot" onclick="scrollToSlide(4)" title="Этапы"></div>
-  <div class="dot" onclick="scrollToSlide(5)" title="Дроби"></div>
-  <div class="dot" onclick="scrollToSlide(6)" title="Приёмы"></div>
-  <div class="dot" onclick="scrollToSlide(7)" title="Итог"></div>
+<canvas id="bg-canvas"></canvas>
+<div id="progress"></div>
+<nav id="nav">
+  <div class="ndot on" data-label="Начало" onclick="go(0)"></div>
+  <div class="ndot" data-label="Команда" onclick="go(1)"></div>
+  <div class="ndot" data-label="Идея" onclick="go(2)"></div>
+  <div class="ndot" data-label="Этапы" onclick="go(3)"></div>
+  <div class="ndot" data-label="Дроби" onclick="go(4)"></div>
+  <div class="ndot" data-label="Приёмы" onclick="go(5)"></div>
+  <div class="ndot" data-label="Итоги" onclick="go(6)"></div>
 </nav>
 
-<!-- ══════════════ СЛАЙД 1 ══════════════ -->
-<section class="slide" id="slide1">
-  <div class="slide1-bg"></div>
-  <div class="apple-visual">🍎</div>
-
-  <div class="tag">Мастер-класс · 30 минут</div>
-  <h1>Teach &amp; Talk:<br><em>Предметный</em> микс</h1>
-  <p class="subtitle-line">
-    Тема: <strong>«Дробные числительные: смысл, чтение, произношение»</strong>
-  </p>
-
-  <div class="meta-row">
-    <div class="meta-item">
-      <span class="meta-label">Формат</span>
-      <span class="meta-value">Межпредметный урок</span>
-    </div>
-    <div class="meta-item">
-      <span class="meta-label">Аудитория</span>
-      <span class="meta-value">Педагоги</span>
-    </div>
-    <div class="meta-item">
-      <span class="meta-label">Место</span>
-      <span class="meta-value">Успенский район · ШМ. Маметовой</span>
-    </div>
-    <div class="meta-item">
-      <span class="meta-label">Год</span>
-      <span class="meta-value">2026</span>
-    </div>
+<!-- S1 -->
+<section class="slide" id="s1">
+  <div class="apple-anim"><div class="apple-half">🍎</div></div>
+  <div class="hero-eyebrow">✦ Мастер-класс · Успенский район · 2026</div>
+  <h1 class="hero-title">Teach &amp; Talk:<br><span class="hl">Предметный</span> микс</h1>
+  <p class="hero-sub">Тема: <strong>«Дробные числительные: смысл, чтение, произношение»</strong><br>Формат — межпредметный урок · Аудитория — педагоги · 30 минут</p>
+  <div class="meta-chips">
+    <div class="chip">⏱ 30 минут</div>
+    <div class="chip">👩‍🏫 Педагоги</div>
+    <div class="chip">🏫 ШОШ им. М. Маметовой</div>
+    <div class="chip">📍 Успенский район</div>
   </div>
-
-  <div class="team-grid">
-    <div class="team-badge"><span>📐</span> Математик</div>
-    <div class="team-badge"><span>📖</span> Филолог</div>
-    <div class="team-badge"><span>🏛️</span> Историк</div>
-    <div class="team-badge"><span>🧩</span> Учитель нач. кл.</div>
+  <div class="team-row">
+    <div class="tbadge"><span class="ico">📐</span> Математик</div>
+    <div class="tbadge"><span class="ico">📖</span> Филолог</div>
+    <div class="tbadge"><span class="ico">🏛️</span> Историк</div>
+    <div class="tbadge"><span class="ico">🧩</span> Учитель нач. кл.</div>
   </div>
 </section>
 
-<!-- ══════════════ СЛАЙД 2 ══════════════ -->
-<section class="slide" id="slide2">
-  <div class="slide-label">Слайд 2 · 0:15 – 0:30</div>
-  <h2 class="slide-title">Команда <em>предметного</em> микса</h2>
-
-  <div class="roles-grid">
-    <div class="role-card">
-      <div class="role-icon">📐</div>
-      <div class="role-name">Математик</div>
-      <div class="role-desc">Отвечает за точность и визуальное оформление. Показывает структуру дроби.</div>
-    </div>
-    <div class="role-card">
-      <div class="role-icon">📖</div>
-      <div class="role-name">Филолог</div>
-      <div class="role-desc">Объясняет идеи словами. Раскрывает языковую форму дробных числительных.</div>
-    </div>
-    <div class="role-card">
-      <div class="role-icon">🧩</div>
-      <div class="role-name">Учитель нач. кл.</div>
-      <div class="role-desc">Превращает идеи в понятные задания для учащихся.</div>
-    </div>
-    <div class="role-card">
-      <div class="role-icon">🏛️</div>
-      <div class="role-name">Историк</div>
-      <div class="role-desc">Показывает связь с жизнью через реальные контексты и примеры.</div>
-    </div>
+<!-- S2 -->
+<section class="slide" id="s2">
+  <div class="slide-tag">Слайд 2 · 0:15–0:30</div>
+  <h2 class="slide-h">Команда <em>предметного</em> микса</h2>
+  <div class="roles">
+    <div class="rcard"><div class="rcard-glow"></div><span class="rcard-icon">📐</span><div class="rcard-name">Математик</div><div class="rcard-desc">Отвечает за точность и визуальное оформление. Показывает структуру дроби как математического объекта.</div><div class="rcard-accent"></div></div>
+    <div class="rcard"><div class="rcard-glow"></div><span class="rcard-icon">📖</span><div class="rcard-name">Филолог</div><div class="rcard-desc">Объясняет идеи словами. Раскрывает языковую форму дробных числительных и грамматические закономерности.</div><div class="rcard-accent"></div></div>
+    <div class="rcard"><div class="rcard-glow"></div><span class="rcard-icon">🧩</span><div class="rcard-name">Учитель нач. кл.</div><div class="rcard-desc">Превращает сложные идеи в понятные задания. Связывает теорию с уровнем восприятия учащихся.</div><div class="rcard-accent"></div></div>
+    <div class="rcard"><div class="rcard-glow"></div><span class="rcard-icon">🏛️</span><div class="rcard-name">Историк</div><div class="rcard-desc">Показывает связь с жизнью через реальные исторические и современные контексты.</div><div class="rcard-accent"></div></div>
   </div>
 </section>
 
-<!-- ══════════════ СЛАЙД 3 ══════════════ -->
-<section class="slide" id="slide3">
-  <div class="slide-label">Слайд 3 · 0:30 – 3:00</div>
-  <h2 class="slide-title">В школе предметы разделены.<br>В жизни — нет.</h2>
-
-  <blockquote class="big-quote">
-    «Задачи приходят без подписи предмета» — поэтому важно учить видеть связи между дисциплинами.
-  </blockquote>
-
-  <p style="font-size:.85rem;color:rgba(247,243,235,.7);font-weight:600;margin-bottom:14px;">Примеры межпредметных пар:</p>
-  <div class="subject-pairs">
-    <div class="pair-chip">Биология <span class="plus">+</span> География</div>
-    <div class="pair-chip">История <span class="plus">+</span> Литература</div>
-    <div class="pair-chip">Математика <span class="plus">+</span> Искусство</div>
-    <div class="pair-chip">Физика <span class="plus">+</span> Физкультура</div>
-    <div class="pair-chip">Математика <span class="plus">+</span> Русский язык</div>
+<!-- S3 -->
+<section class="slide" id="s3">
+  <div class="slide-tag">Слайд 3 · 0:30–3:00</div>
+  <h2 class="slide-h">В школе предметы <em>разделены</em>.<br>В жизни — нет.</h2>
+  <blockquote class="big-q">«Задачи приходят без подписи предмета» — поэтому важно учить видеть связи между дисциплинами.</blockquote>
+  <p style="font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(247,243,235,.3);margin-bottom:14px">Примеры межпредметных пар:</p>
+  <div class="pairs-grid">
+    <div class="pair"><span>🧬</span> Биология <span class="plus">+</span> География</div>
+    <div class="pair"><span>📜</span> История <span class="plus">+</span> Литература</div>
+    <div class="pair"><span>🎨</span> Математика <span class="plus">+</span> Искусство</div>
+    <div class="pair"><span>⚡</span> Физика <span class="plus">+</span> Физкультура</div>
+    <div class="pair"><span>✍️</span> Математика <span class="plus">+</span> Русский язык</div>
   </div>
 </section>
 
-<!-- ══════════════ СЛАЙД 4 ══════════════ -->
-<section class="slide" id="slide4">
-  <div class="slide-label">Слайд 4 · 3:00 – 13:00</div>
-  <h2 class="slide-title">Структура <em>мастер-класса</em></h2>
-
+<!-- S4 -->
+<section class="slide" id="s4">
+  <div class="slide-tag">Слайд 4 · 3:00–13:00</div>
+  <h2 class="slide-h">Три этапа <em>мастер-класса</em></h2>
   <div class="timeline">
-    <div class="tl-item">
-      <div class="tl-time-col">
-        <div class="tl-dot"></div>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-content">
-        <div class="tl-tag">Этап 1 · 0–5 мин</div>
-        <div class="tl-heading">Speed-dating: быстрое знакомство</div>
-        <div class="tl-body">
-          Участники объединяются в пары. Каждый отвечает:<br>
-          <strong>«Какой предмет вы преподаёте?»</strong> и <strong>«Какие трудности с дробями?»</strong><br>
-          2–3 смены партнёра. Фиксация типичных проблем: неправильное чтение, ошибки согласования, формальное заучивание.
-        </div>
-      </div>
+    <div class="tl">
+      <div class="tl-left"><div class="tl-node">1</div><div class="tl-wire"></div></div>
+      <div class="tl-body"><div class="tl-badge">⏱ 0–5 мин · Speed-dating</div><div class="tl-title">Быстрое знакомство</div><div class="tl-text">Участники объединяются в пары. Каждый отвечает: <strong>«Какой предмет вы преподаёте?»</strong> и <strong>«Какие трудности с дробями?»</strong><br>2–3 смены партнёра. Фиксируются типичные проблемы.</div></div>
     </div>
-    <div class="tl-item">
-      <div class="tl-time-col">
-        <div class="tl-dot"></div>
-        <div class="tl-line"></div>
-      </div>
-      <div class="tl-content">
-        <div class="tl-tag">Этап 2 · 5–20 мин</div>
-        <div class="tl-heading">Моделирование межпредметного урока</div>
-        <div class="tl-body">
-          <strong>Часть 1 (5–12 мин) — Позиция филолога:</strong> анализ дробей 3/5, 7/8, 1/2. Структура числительного, типичные ошибки, согласование в предложении.<br><br>
-          <strong>Часть 2 (12–20 мин) — Позиция математика:</strong> визуализация дроби как части целого. Связь формы и смысла. Разные формы записи: ¾ = три четвёртых = 0,75 = 75%.
-        </div>
-      </div>
+    <div class="tl">
+      <div class="tl-left"><div class="tl-node">2</div><div class="tl-wire"></div></div>
+      <div class="tl-body"><div class="tl-badge">⏱ 5–20 мин · Моделирование</div><div class="tl-title">Межпредметный урок</div><div class="tl-text"><strong>Позиция филолога (5–12 мин):</strong> анализ дробей 3/5, 7/8, 1/2. Структура, ошибки, согласование.<br><br><strong>Позиция математика (12–20 мин):</strong> дробь как часть целого. Формы записи: ¾ = 0,75 = 75%.</div></div>
     </div>
-    <div class="tl-item">
-      <div class="tl-time-col">
-        <div class="tl-dot"></div>
-        <div class="tl-line" style="background:transparent"></div>
-      </div>
-      <div class="tl-content">
-        <div class="tl-tag">Этап 3 · 20–30 мин</div>
-        <div class="tl-heading">Синтез и обмен «одной фишкой»</div>
-        <div class="tl-body">
-          Совместный вывод: правильное произношение дроби — показатель её понимания.<br>
-          Практическое задание: «7/8 пути уже пройдено» — прочитать и объяснить.<br>
-          Каждый участник делится одним приёмом из своей практики.
-        </div>
-      </div>
+    <div class="tl">
+      <div class="tl-left"><div class="tl-node">3</div><div class="tl-wire" style="background:transparent"></div></div>
+      <div class="tl-body"><div class="tl-badge">⏱ 20–30 мин · Синтез</div><div class="tl-title">Обмен «одной фишкой»</div><div class="tl-text">Совместный вывод: произношение — показатель понимания.<br>Практика: «7/8 пути уже пройдено».<br><strong>Каждый участник делится одним приёмом из своей практики.</strong></div></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════ СЛАЙД 5 ══════════════ -->
-<section class="slide" id="slide5">
-  <div class="slide-label">Слайд 5 · Разбор дробей</div>
-  <h2 class="slide-title">Три дроби — два предмета</h2>
-
-  <div class="fractions-grid">
-    <div class="frac-card" id="fc1">
-      <div class="frac-display">³⁄₅</div>
-      <div class="frac-reading">→ «три пятых»</div>
-      <div class="frac-struct">
-        «три» — количественное числительное<br>
-        «<span class="correct">пятых</span>» — порядковое, род. пад., мн. ч.<br>
-        Ошибка: <span class="wrong">«три пятые»</span>
+<!-- S5 -->
+<section class="slide" id="s5">
+  <div class="slide-tag">Слайд 5 · Разбор дробей</div>
+  <h2 class="slide-h">Три дроби — <em>два взгляда</em></h2>
+  <p style="font-size:.78rem;color:rgba(247,243,235,.3);margin-bottom:22px;font-weight:600">👆 Нажмите на карточку, чтобы перевернуть</p>
+  <div class="fracs">
+    <div class="fc">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="fc-glow"></div><div class="frac-num">³⁄₅</div><div class="frac-read">«три пятых»</div><div class="frac-hint">Правильная дробь · 3 из 5 частей</div></div>
+        <div class="fc-back"><div class="fb-label">Анализ</div><div class="fb-row"><span>«три» — количественное числительное</span><span class="ok">«пятых» — порядковое, род. пад., мн. ч. ✓</span><span class="bad">«три пятые» — неправильно ✗</span></div><div class="fb-math">Правильная дробь · меньше 1 · числитель &lt; знаменателя</div></div>
       </div>
-      <div class="frac-math">Правильная дробь · меньше 1 · три части из пяти</div>
     </div>
-    <div class="frac-card" id="fc2">
-      <div class="frac-display">⁷⁄₈</div>
-      <div class="frac-reading">→ «семь восьмых»</div>
-      <div class="frac-struct">
-        «семь» — количественное числительное<br>
-        «<span class="correct">восьмых</span>» — порядковое, род. пад., мн. ч.<br>
-        Ошибка: <span class="wrong">«семь восьмые»</span>
+    <div class="fc">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="fc-glow"></div><div class="frac-num">⁷⁄₈</div><div class="frac-read">«семь восьмых»</div><div class="frac-hint">Правильная дробь · близка к 1</div></div>
+        <div class="fc-back"><div class="fb-label">Анализ</div><div class="fb-row"><span>«семь» — количественное числительное</span><span class="ok">«восьмых» — порядковое, род. пад., мн. ч. ✓</span><span class="bad">«семь восьмые» — неправильно ✗</span></div><div class="fb-math">Правильная дробь · 7 из 8 частей · близка к единице</div></div>
       </div>
-      <div class="frac-math">Правильная дробь · близка к 1 · семь частей из восьми</div>
     </div>
-    <div class="frac-card" id="fc3">
-      <div class="frac-display">½</div>
-      <div class="frac-reading">→ «одна вторая» ⚠️ особый случай!</div>
-      <div class="frac-struct">
-        «одна» — количественное, ж.р.<br>
-        «<span class="correct">вторая</span>» — порядковое, ед. ч. (не множ.!)<br>
-        Ошибка: <span class="wrong">«одна вторых»</span>
+    <div class="fc">
+      <div class="fc-inner">
+        <div class="fc-front"><div class="fc-glow"></div><div class="frac-num">½</div><div class="frac-read">«одна вторая» ⚠️</div><div class="frac-hint">Особый случай! Знаменатель ед. числа</div></div>
+        <div class="fc-back"><div class="fb-label">⚠️ Особый случай!</div><div class="fb-row"><span>«одна» — количественное, ж.р.</span><span class="ok">«вторая» — порядковое, ед. ч. ✓</span><span class="bad">«одна вторых» — неправильно ✗</span></div><div class="fb-math">= 0,5 · Одна часть → знаменатель в ед. числе!</div></div>
       </div>
-      <div class="frac-math">Знаменатель ед. ч. — потому что взята одна часть · = 0,5</div>
     </div>
   </div>
-
-  <p style="margin-top:22px;font-size:.82rem;color:rgba(247,243,235,.55);font-weight:500;max-width:680px;line-height:1.6;">
-    ✦ Вывод: во всех дробях, кроме ½, знаменатель стоит в родительном падеже множественного числа. В дроби ½ форма меняется, потому что меняется количество частей — одна.
-  </p>
+  <p class="frac-tip">✦ Вывод: во всех дробях, кроме ½, знаменатель стоит в родительном падеже множественного числа. В ½ — форма меняется, потому что меняется количество частей.</p>
 </section>
 
-<!-- ══════════════ СЛАЙД 6 ══════════════ -->
-<section class="slide" id="slide6">
-  <div class="slide-label">Слайд 6 · Приёмы</div>
-  <h2 class="slide-title">Три рабочих <em>приёма</em></h2>
-
-  <div class="tricks-grid">
-    <div class="trick-card">
-      <div class="trick-icon">🔍</div>
-      <div class="trick-name">«Выведи правило сам»</div>
-      <div class="trick-desc">Через анализ нескольких дробей учащиеся самостоятельно формулируют закономерность. Развивает индуктивное мышление.</div>
-      <div class="trick-num">1</div>
-    </div>
-    <div class="trick-card">
-      <div class="trick-icon">❌</div>
-      <div class="trick-name">«Найди ошибку»</div>
-      <div class="trick-desc">Работа с намеренно неправильным вариантом: «три пятые», «семь восьмые». Учащиеся выявляют и исправляют ошибки.</div>
-      <div class="trick-num">2</div>
-    </div>
-    <div class="trick-card">
-      <div class="trick-icon">🔄</div>
-      <div class="trick-name">«Одна дробь — три формы»</div>
-      <div class="trick-desc">Связь символической, десятичной и процентной формы: ¾ = три четвёртых = 0,75 = 75%. Понимание через трансформацию.</div>
-      <div class="trick-num">3</div>
-    </div>
+<!-- S6 -->
+<section class="slide" id="s6">
+  <div class="slide-tag">Слайд 6 · Приёмы</div>
+  <h2 class="slide-h">Три рабочих <em>приёма</em></h2>
+  <div class="tricks">
+    <div class="trk"><span class="trk-ico">🔍</span><div class="trk-name">«Выведи правило сам»</div><div class="trk-desc">Через анализ нескольких дробей учащиеся самостоятельно формулируют закономерность. Развивает индуктивное мышление.</div><div class="trk-num">1</div><div class="trk-bar"></div></div>
+    <div class="trk"><span class="trk-ico">❌</span><div class="trk-name">«Найди ошибку»</div><div class="trk-desc">Работа с намеренно неправильными вариантами: «три пятые», «семь восьмые». Учащиеся выявляют и исправляют.</div><div class="trk-num">2</div><div class="trk-bar"></div></div>
+    <div class="trk"><span class="trk-ico">🔄</span><div class="trk-name">«Одна дробь — три формы»</div><div class="trk-desc">Связь форм: ¾ = три четвёртых = 0,75 = 75%. Понимание через трансформацию сохраняет смысл.</div><div class="trk-num">3</div><div class="trk-bar"></div></div>
   </div>
 </section>
 
-<!-- ══════════════ СЛАЙД 7 ══════════════ -->
-<section class="slide" id="slide7">
-  <div class="slide-label">Слайд 7 · Итоги</div>
-  <h2 class="slide-title">Ожидаемые результаты</h2>
-
-  <div class="results-list">
-    <div class="result-item">
-      <div class="result-check">✦</div>
-      <div class="result-text">Осознание межпредметных связей — понимание того, как математика и язык дополняют друг друга.</div>
-    </div>
-    <div class="result-item">
-      <div class="result-check">✦</div>
-      <div class="result-text">Понимание структуры дробных числительных: числитель — количественное, знаменатель — порядковое в родительном падеже мн. числа.</div>
-    </div>
-    <div class="result-item">
-      <div class="result-check">✦</div>
-      <div class="result-text">Формирование функциональной грамотности — умения применять знания в реальных контекстах.</div>
-    </div>
-    <div class="result-item">
-      <div class="result-check">✦</div>
-      <div class="result-text">Готовый алгоритм совместной работы учителей разных предметов, применимый в практике.</div>
-    </div>
+<!-- S7 -->
+<section class="slide" id="s7">
+  <div class="slide-tag">Слайд 7 · Итоги</div>
+  <h2 class="slide-h">Ожидаемые <em>результаты</em></h2>
+  <div class="results">
+    <div class="res"><div class="res-icon">✦</div><div class="res-text">Осознание межпредметных связей — понимание того, как математика и язык взаимно дополняют друг друга.</div></div>
+    <div class="res"><div class="res-icon">✦</div><div class="res-text">Понимание структуры дробных числительных: числитель — количественное, знаменатель — порядковое в род. пад. мн. числа (кроме ½).</div></div>
+    <div class="res"><div class="res-icon">✦</div><div class="res-text">Формирование функциональной грамотности — умение применять знания в реальных контекстах без «подписи предмета».</div></div>
+    <div class="res"><div class="res-icon">✦</div><div class="res-text">Готовый алгоритм совместной работы учителей разных предметов, применимый в ежедневной практике.</div></div>
   </div>
-
-  <div class="slide7-footer">
-    <div class="school-badge">ШОШ им. М. Маметовой · Успенский р-он · 2026</div>
+  <div class="s7-footer">
+    <div class="school-chip">ШОШ им. М. Маметовой · Успенский р-он · 2026</div>
     <span>Teach &amp; Talk: Предметный микс</span>
   </div>
 </section>
 
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const dots = document.querySelectorAll('.dot');
-  const progressBar = document.getElementById('progress');
+/* ── PARTICLES CANVAS ── */
+const canvas=document.getElementById('bg-canvas'),ctx=canvas.getContext('2d');
+let W,H,mouse={x:-999,y:-999};
+const symbols=['½','⅓','⅔','¾','3/5','7/8','÷','×','=','+','∑','π','√'];
 
-  // Intersection Observer for reveal
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
-    });
-  }, { threshold: 0.12 });
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();
+window.addEventListener('resize',resize);
+window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY+window.scrollY});
 
-  slides.forEach(s => observer.observe(s));
-
-  // Scroll progress + active dot
-  window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const total = document.body.scrollHeight - window.innerHeight;
-    progressBar.style.width = (scrolled / total * 100) + '%';
-
-    // find active slide
-    let active = 0;
-    slides.forEach((s, i) => {
-      if (s.getBoundingClientRect().top < window.innerHeight * 0.5) active = i;
-    });
-    dots.forEach((d, i) => d.classList.toggle('active', i === active));
-  });
-
-  function scrollToSlide(n) {
-    document.getElementById('slide' + n).scrollIntoView({ behavior: 'smooth' });
+class P{
+  constructor(){this.reset(true)}
+  reset(init){
+    this.x=Math.random()*W;
+    this.y=init?Math.random()*H:Math.random()*H;
+    this.vx=(Math.random()-.5)*.4;
+    this.vy=(Math.random()-.5)*.4;
+    this.r=Math.random()*2+.5;
+    this.a=Math.random()*.3+.05;
+    this.isSym=Math.random()>.65;
+    this.sym=symbols[Math.floor(Math.random()*symbols.length)];
+    this.fs=Math.random()*12+9;
+    this.col=Math.random()>.5?'240,192,64':'0,201,177';
+    this.ph=Math.random()*Math.PI*2;
   }
+  tick(){
+    this.x+=this.vx; this.y+=this.vy; this.ph+=.018;
+    const dx=this.x-mouse.x,dy=this.y-mouse.y+window.scrollY,d=Math.hypot(dx,dy);
+    if(d<100){const f=(100-d)/100*2;this.x+=dx/d*f;this.y+=dy/d*f}
+    if(this.x<-60)this.x=W+60;if(this.x>W+60)this.x=-60;
+    if(this.y<-60)this.y=H+60;if(this.y>H+60)this.y=-60;
+  }
+  draw(){
+    const a=this.a*(.7+.3*Math.sin(this.ph));
+    if(this.isSym){ctx.font=`${this.fs}px Playfair Display`;ctx.fillStyle=`rgba(${this.col},${a})`;ctx.fillText(this.sym,this.x,this.y)}
+    else{ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(${this.col},${a})`;ctx.fill()}
+  }
+}
 
-  // Fraction card click highlight
-  document.querySelectorAll('.frac-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.frac-card').forEach(c => c.classList.remove('active-card'));
-      card.classList.add('active-card');
-    });
+const ps=[];for(let i=0;i<100;i++)ps.push(new P());
+
+function drawLines(){
+  for(let i=0;i<ps.length;i++){
+    for(let j=i+1;j<ps.length;j++){
+      const d=Math.hypot(ps[i].x-ps[j].x,ps[i].y-ps[j].y);
+      if(d<110){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);ctx.strokeStyle=`rgba(240,192,64,${.07*(1-d/110)})`;ctx.lineWidth=.4;ctx.stroke()}
+    }
+  }
+}
+
+(function loop(){ctx.clearRect(0,0,W,H);drawLines();ps.forEach(p=>{p.tick();p.draw()});requestAnimationFrame(loop)})();
+
+/* ── SCROLL & PROGRESS ── */
+const prog=document.getElementById('progress');
+const dots=document.querySelectorAll('.ndot');
+const slides=document.querySelectorAll('.slide');
+
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,t=document.body.scrollHeight-window.innerHeight;
+  prog.style.width=(s/t*100)+'%';
+  let a=0;slides.forEach((sl,i)=>{if(sl.getBoundingClientRect().top<window.innerHeight*.5)a=i});
+  dots.forEach((d,i)=>d.classList.toggle('on',i===a));
+});
+
+function go(i){slides[i].scrollIntoView({behavior:'smooth'})}
+
+/* ── INTERSECTION OBSERVER ── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    el.classList.add('is-visible');
+    // stagger by class
+    const stagger=(sel,delay,step)=>{
+      el.querySelectorAll(sel).forEach((c,i)=>setTimeout(()=>c.classList.add('shown'),delay+i*step));
+    };
+    stagger('.rcard',100,120);
+    stagger('.tl',100,160);
+    stagger('.trk',100,160);
+    stagger('.res',100,130);
+    stagger('.pair',200,90);
+    const bq=el.querySelector('.big-q');if(bq)setTimeout(()=>bq.classList.add('shown'),200);
+    const ft=el.querySelector('.frac-tip');if(ft)setTimeout(()=>ft.classList.add('shown'),500);
+    const footer=el.querySelector('.s7-footer');if(footer)setTimeout(()=>footer.classList.add('shown'),600);
   });
+},{threshold:.12});
+
+slides.forEach(s=>io.observe(s));
+
+/* ── CARD FLIP (touch/click) ── */
+document.querySelectorAll('.fc').forEach(c=>{
+  c.addEventListener('click',()=>c.classList.toggle('active'));
+});
 </script>
 </body>
 </html>
