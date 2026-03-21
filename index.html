@@ -1905,28 +1905,64 @@
 
     function drawLines() {
       const svg = document.getElementById('connector-svg');
-      svg.innerHTML = '';
+      // Define arrowhead marker
+      svg.innerHTML = `
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke" />
+          </marker>
+        </defs>
+      `;
       const stage = document.getElementById('apple-stage');
       const stageRect = stage.getBoundingClientRect();
       const apple = document.getElementById('center-apple');
       const appleRect = apple.getBoundingClientRect();
-      const cx2 = (appleRect.left + appleRect.width / 2 - stageRect.left) / stageRect.width * 760;
-      const cy2 = (appleRect.top + appleRect.height / 2 - stageRect.top) / stageRect.height * 380;
+
+      const cx = (appleRect.left + appleRect.width / 2 - stageRect.left) / stageRect.width * 760;
+      const cy = (appleRect.top + appleRect.height / 2 - stageRect.top) / stageRect.height * 380;
 
       const colors = { 'sj-bio': '#4ecb71', 'sj-phys': '#f0c040', 'sj-lit': '#9b59f5', 'sj-math': '#00c9b1' };
+
       ['sj-bio', 'sj-phys', 'sj-lit', 'sj-math'].forEach(id => {
-        const el = document.getElementById(id);
-        const r = el.getBoundingClientRect();
-        const ex = (r.left + r.width / 2 - stageRect.left) / stageRect.width * 760;
-        const ey = (r.top + r.height / 2 - stageRect.top) / stageRect.height * 380;
+        const card = document.getElementById(id);
+        const cardRect = card.getBoundingClientRect();
+
+        // Target card boundaries in SVG coordinate system
+        const x1 = (cardRect.left - stageRect.left) / stageRect.width * 760;
+        const y1 = (cardRect.top - stageRect.top) / stageRect.height * 380;
+        const x2 = (cardRect.right - stageRect.left) / stageRect.width * 760;
+        const y2 = (cardRect.bottom - stageRect.top) / stageRect.height * 380;
+
+        const ex = (x1 + x2) / 2;
+        const ey = (y1 + y2) / 2;
+        const dx = ex - cx, dy = ey - cy;
+
+        // Intersection point on card edge
+        let tx, ty;
+        if (Math.abs(dx / (x2 - x1)) > Math.abs(dy / (y2 - y1))) {
+          tx = dx > 0 ? x1 : x2;
+          ty = cy + (dy / dx) * (tx - cx);
+        } else {
+          ty = dy > 0 ? y1 : y2;
+          tx = cx + (dx / dy) * (ty - cy);
+        }
+
+        // Start point from apple's edge (circle approx)
+        const ar = 42;
+        const angle = Math.atan2(dy, dx);
+        const sx = cx + Math.cos(angle) * ar;
+        const sy = cy + Math.sin(angle) * ar;
+
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', cx2); line.setAttribute('y1', cy2);
-        line.setAttribute('x2', ex); line.setAttribute('y2', ey);
+        line.setAttribute('x1', sx); line.setAttribute('y1', sy);
+        line.setAttribute('x2', tx); line.setAttribute('y2', ty);
         line.setAttribute('stroke', colors[id]);
-        line.setAttribute('stroke-width', '1.5');
-        line.setAttribute('stroke-opacity', '0.5');
-        line.setAttribute('stroke-dasharray', '6 4');
-        const len = Math.hypot(ex - cx2, ey - cy2);
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('stroke-dasharray', '8 4');
+        line.setAttribute('stroke-opacity', '0.7');
+        line.setAttribute('marker-end', 'url(#arrow)');
+
+        const len = Math.hypot(tx - sx, ty - sy);
         line.style.strokeDashoffset = len;
         line.style.transition = 'stroke-dashoffset .8s ease';
         svg.appendChild(line);
