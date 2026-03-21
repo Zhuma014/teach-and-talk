@@ -1,679 +1,1939 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teach & Talk: Предметный микс</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--gold:#f0c040;--teal:#00c9b1;--rust:#ff4e42;--purple:#9b59f5;--green:#4ecb71;--ink:#08080f;--cream:#f5f0e8;--dim:rgba(245,240,232,.55)}
-html,body{height:100%;overflow:hidden;font-family:'Montserrat',sans-serif;background:var(--ink);color:var(--cream)}
-#cv{position:fixed;inset:0;z-index:0;pointer-events:none}
-#pbar{position:fixed;top:0;left:0;height:3px;z-index:999;background:linear-gradient(90deg,var(--gold),var(--teal),var(--purple));width:0%;transition:width .5s cubic-bezier(.4,0,.2,1)}
-#nav{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:900;display:flex;flex-direction:column;gap:10px}
-.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.25);cursor:pointer;transition:all .35s;position:relative}
-.dot::after{content:attr(data-t);position:absolute;right:18px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.85);color:#fff;font-size:.58rem;font-weight:700;padding:3px 8px;border-radius:4px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
-.dot:hover::after{opacity:1}
-.dot.on{background:var(--gold);transform:scale(1.6);border-color:var(--gold);box-shadow:0 0 12px rgba(240,192,64,.5)}
-#deck{position:fixed;inset:0;z-index:10}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:55px 90px 55px 100px;overflow:hidden;opacity:0;pointer-events:none}
-.slide.current{opacity:1;pointer-events:all}
-.stag{font-size:.6rem;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-.sh{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3.6vw,2.9rem);font-weight:700;line-height:1.1;margin-bottom:24px;max-width:780px}
-.sh em{color:var(--teal);font-style:normal}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teach & Talk: Предметный микс</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
 
-/* ══ SLIDE 1 — HERO ══ */
-#s1{background:transparent;align-items:flex-start}
-.s1ap{position:absolute;right:7%;top:50%;transform:translateY(-50%) scale(.4) rotate(-30deg);opacity:0;transition:transform 1s .6s cubic-bezier(.34,1.56,.64,1),opacity .8s .6s}
-.s1ap.go{transform:translateY(-50%) scale(1) rotate(0deg);opacity:1}
-.s1ap .em{font-size:clamp(8rem,13vw,14rem);animation:wob 5s ease-in-out infinite alternate;filter:drop-shadow(0 0 50px rgba(240,192,64,.25))}
-@keyframes wob{from{transform:translateY(0) rotate(-4deg)}to{transform:translateY(-18px) rotate(4deg)}}
-.s1tg{font-size:.65rem;font-weight:800;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:0;transform:translateY(20px);transition:all .7s .1s}
-.s1tg.go{opacity:1;transform:translateY(0)}
-.s1h{font-family:'Playfair Display',serif;font-size:clamp(3rem,6.5vw,5.6rem);font-weight:900;line-height:1.05;max-width:800px;opacity:0;transform:translateX(-40px);transition:all .8s .3s cubic-bezier(.22,1,.36,1)}
-.s1h.go{opacity:1;transform:translateX(0)}
-.s1h .hl{color:var(--gold);font-style:italic;display:inline-block;position:relative}
-.s1h .hl::after{content:'';position:absolute;bottom:-3px;left:0;height:3px;background:var(--gold);width:0;border-radius:2px;transition:width 1s 1.2s}
-.s1h .hl.go::after{width:100%}
-.s1sb{margin-top:14px;font-size:.95rem;font-weight:500;line-height:1.65;color:var(--dim);max-width:540px;opacity:0;transform:translateY(16px);transition:all .7s .6s}
-.s1sb.go{opacity:1;transform:translateY(0)}
-.s1sb strong{color:var(--teal)}
-.s1ch{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;opacity:0;transform:translateY(16px);transition:all .7s .8s}
-.s1ch.go{opacity:1;transform:translateY(0)}
-.chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:60px;padding:6px 14px;font-size:.7rem;font-weight:700;display:flex;align-items:center;gap:6px;transition:all .25s;cursor:default}
-.chip:hover{background:rgba(240,192,64,.14);border-color:var(--gold)}
-.s1tm{display:flex;gap:11px;flex-wrap:wrap;margin-top:26px;opacity:0;transform:translateY(16px);transition:all .7s 1s}
-.s1tm.go{opacity:1;transform:translateY(0)}
-.tb{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 15px;font-size:.74rem;font-weight:700;display:flex;align-items:center;gap:8px;cursor:default;transition:all .3s}
-.tb:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 28px rgba(240,192,64,.15)}
+    :root {
+      --gold: #f0c040;
+      --teal: #00c9b1;
+      --rust: #ff4e42;
+      --purple: #9b59f5;
+      --green: #4ecb71;
+      --ink: #08080f;
+      --cream: #f5f0e8;
+      --dim: rgba(245, 240, 232, .55)
+    }
 
-/* ══ SLIDE 2 — КОМАНДА ══ */
-#s2{background:linear-gradient(150deg,#0d0d20 0%,#08080f 100%)}
-.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:920px}
-.rc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden;cursor:default;transform:translateY(50px) scale(.94);opacity:0;transition:transform .55s,opacity .55s,box-shadow .3s,border-color .3s}
-.rc.go{transform:translateY(0) scale(1);opacity:1}
-.rc:hover{box-shadow:0 18px 50px rgba(0,0,0,.4);border-color:rgba(255,255,255,.2);transform:translateY(-5px)!important}
-.rcgl{position:absolute;inset:0;border-radius:18px;opacity:0;transition:opacity .4s;pointer-events:none}
-.rc:hover .rcgl{opacity:1}
-.rc:nth-child(1) .rcgl{background:radial-gradient(circle at 30% 20%,rgba(240,192,64,.15),transparent 55%)}
-.rc:nth-child(2) .rcgl{background:radial-gradient(circle at 30% 20%,rgba(0,201,177,.15),transparent 55%)}
-.rc:nth-child(3) .rcgl{background:radial-gradient(circle at 30% 20%,rgba(255,78,66,.15),transparent 55%)}
-.rc:nth-child(4) .rcgl{background:radial-gradient(circle at 30% 20%,rgba(155,89,245,.15),transparent 55%)}
-.rcic{font-size:1.8rem;margin-bottom:10px;display:block}
-.rcnm{font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700;margin-bottom:6px}
-.rcds{font-size:.75rem;color:var(--dim);line-height:1.6}
-.rcbr{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 18px 18px;transform:scaleX(0);transform-origin:left;transition:transform .6s .3s}
-.rc.go .rcbr{transform:scaleX(1)}
-.rc:nth-child(1) .rcbr{background:var(--gold)}
-.rc:nth-child(2) .rcbr{background:var(--teal)}
-.rc:nth-child(3) .rcbr{background:var(--rust)}
-.rc:nth-child(4) .rcbr{background:var(--purple)}
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--ink);
+      color: var(--cream)
+    }
 
-/* ══ SLIDE 3 — ИДЕЯ ══ */
-#s3{background:linear-gradient(140deg,#001a17 0%,#08080f 100%)}
-.bq{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,2.5vw,1.9rem);font-style:italic;line-height:1.55;max-width:740px;border-left:4px solid var(--teal);padding-left:26px;margin:14px 0 28px;transform:translateX(-40px);opacity:0;transition:all .8s .25s cubic-bezier(.22,1,.36,1)}
-.bq.go{transform:translateX(0);opacity:1}
-.pairs{display:flex;gap:10px;flex-wrap:wrap;max-width:820px}
-.pair{background:rgba(0,201,177,.08);border:1px solid rgba(0,201,177,.2);border-radius:60px;padding:8px 16px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:6px;transform:scale(.7) translateY(10px);opacity:0;transition:all .4s;cursor:default}
-.pair.go{transform:scale(1) translateY(0);opacity:1}
-.pair:hover{background:rgba(0,201,177,.18);border-color:var(--teal);transform:scale(1.06)!important}
-.plus{color:var(--teal);font-weight:900;font-size:1.1rem}
+    #cv {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none
+    }
 
-/* ══ SLIDE 4 — ЭТАПЫ ══ */
-#s4{background:linear-gradient(150deg,#0c0c1e 0%,#08080f 100%)}
-.tl{max-width:860px}
-.ti{display:flex;gap:0;opacity:0;transform:translateX(-50px);transition:all .6s}
-.ti.go{opacity:1;transform:translateX(0)}
-.til{display:flex;flex-direction:column;align-items:center;width:50px;flex-shrink:0}
-.tin{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:#000;flex-shrink:0}
-.ti:nth-child(1) .tin{background:var(--gold)}
-.ti:nth-child(2) .tin{background:var(--teal)}
-.ti:nth-child(3) .tin{background:var(--rust)}
-.tiw{width:2px;flex:1;min-height:16px;background:rgba(255,255,255,.08)}
-.tib{padding:0 0 22px 18px;flex:1}
-.titg{display:inline-flex;font-size:.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;border-radius:3px;margin-bottom:7px}
-.ti:nth-child(1) .titg{background:rgba(240,192,64,.12);color:var(--gold)}
-.ti:nth-child(2) .titg{background:rgba(0,201,177,.12);color:var(--teal)}
-.ti:nth-child(3) .titg{background:rgba(255,78,66,.12);color:var(--rust)}
-.titl{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:6px}
-.titx{font-size:.78rem;color:var(--dim);line-height:1.8}
-.titx strong{color:var(--cream)}
+    #pbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      z-index: 999;
+      background: linear-gradient(90deg, var(--gold), var(--teal), var(--purple));
+      width: 0%;
+      transition: width .5s cubic-bezier(.4, 0, .2, 1)
+    }
 
-/* ══ SLIDE 5 — ДРОБИ (3D FLIP) ══ */
-#s5{background:radial-gradient(ellipse 80% 80% at 50% 40%,#0a1928 0%,#08080f 100%)}
-.fhint{font-size:.72rem;color:rgba(245,240,232,.3);font-weight:600;margin-bottom:16px}
-.fracs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;max-width:900px}
-.fc{perspective:900px;cursor:pointer;height:220px;opacity:0;transform:translateY(40px) rotateX(18deg);transition:opacity .5s,transform .5s}
-.fc.go{opacity:1;transform:translateY(0) rotateX(0)}
-.fcin{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.4,0,.2,1)}
-.fc.fl .fcin{transform:rotateY(180deg)}
-.fc:hover:not(.fl) .fcin{transform:rotateY(8deg) rotateX(-4deg) scale(1.03)}
-.ff,.fb{position:absolute;inset:0;border-radius:20px;padding:24px 22px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;border:1px solid rgba(255,255,255,.1)}
-.ff{background:rgba(255,255,255,.05)}
-.fb{transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;background:rgba(5,20,30,.95)}
-.fc:nth-child(1) .fb{border-color:var(--teal)}
-.fc:nth-child(2) .fb{border-color:var(--gold)}
-.fc:nth-child(3) .fb{border-color:var(--rust)}
-.fcg{position:absolute;inset:0;border-radius:20px;pointer-events:none;opacity:0;transition:opacity .4s}
-.fc:hover .fcg,.fc.fl .fcg{opacity:1}
-.fc:nth-child(1) .fcg{background:radial-gradient(circle at 40% 0%,rgba(0,201,177,.2),transparent 55%)}
-.fc:nth-child(2) .fcg{background:radial-gradient(circle at 40% 0%,rgba(240,192,64,.2),transparent 55%)}
-.fc:nth-child(3) .fcg{background:radial-gradient(circle at 40% 0%,rgba(255,78,66,.2),transparent 55%)}
-.fn{font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;line-height:1;display:inline-block}
-.fn.pop{animation:npop .5s cubic-bezier(.34,1.56,.64,1)}
-@keyframes npop{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
-.fc:nth-child(1) .fn{color:var(--teal)}
-.fc:nth-child(2) .fn{color:var(--gold)}
-.fc:nth-child(3) .fn{color:var(--rust)}
-.fr{font-size:.86rem;font-weight:700;color:var(--cream)}
-.fhi{font-size:.68rem;color:rgba(245,240,232,.35)}
-.bl{font-size:.57rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:11px}
-.fc:nth-child(1) .bl{color:var(--teal)}
-.fc:nth-child(2) .bl{color:var(--gold)}
-.fc:nth-child(3) .bl{color:var(--rust)}
-.brow{display:flex;flex-direction:column;gap:6px;font-size:.76rem;line-height:1.5}
-.ok{font-weight:600}
-.fc:nth-child(1) .ok{color:var(--teal)}
-.fc:nth-child(2) .ok{color:var(--gold)}
-.fc:nth-child(3) .ok{color:var(--rust)}
-.no{color:#ff7070;text-decoration:line-through;opacity:.7}
-.bm{margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.08);font-size:.68rem;color:rgba(245,240,232,.35)}
-.fvy{margin-top:14px;max-width:800px;font-size:.78rem;color:rgba(245,240,232,.35);line-height:1.7;font-style:italic;opacity:0;transition:opacity .8s .4s}
-.fvy.go{opacity:1}
+    #nav {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 900;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
 
-/* ══ SLIDE 6 — ЯБЛОКО ИНТЕРАКТИВ ══ */
-#s6{background:radial-gradient(ellipse 90% 90% at 50% 50%,#0d1a10 0%,#08080f 100%)}
-.apple-stage{position:relative;width:100%;max-width:760px;height:380px;margin-top:10px}
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .18);
+      border: 1.5px solid rgba(255, 255, 255, .25);
+      cursor: pointer;
+      transition: all .35s;
+      position: relative
+    }
 
-/* центральное яблоко */
-.center-apple{
-  position:absolute;left:50%;top:50%;
-  transform:translate(-50%,-50%) scale(0);
-  font-size:5rem;cursor:pointer;
-  transition:transform .6s cubic-bezier(.34,1.56,.64,1);
-  filter:drop-shadow(0 0 30px rgba(78,203,113,.4));
-  animation:none;
-  z-index:10;user-select:none;
-  text-align:center;
-}
-.center-apple.show{transform:translate(-50%,-50%) scale(1)}
-.center-apple.pulse{animation:applePulse 2s ease-in-out infinite}
-@keyframes applePulse{0%,100%{filter:drop-shadow(0 0 20px rgba(78,203,113,.4))}50%{filter:drop-shadow(0 0 50px rgba(78,203,113,.8))}}
-.apple-label{font-size:.7rem;font-weight:700;color:rgba(78,203,113,.7);text-align:center;letter-spacing:2px;margin-top:4px}
+    .dot::after {
+      content: attr(data-t);
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, .85);
+      color: #fff;
+      font-size: .58rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s
+    }
 
-/* предмет-узел */
-.subj{
-  position:absolute;
-  opacity:0;transform:scale(0);
-  transition:opacity .5s,transform .5s cubic-bezier(.34,1.56,.64,1);
-  pointer-events:none;
-  text-align:center;
-  z-index:5;
-}
-.subj.show{opacity:1;transform:scale(1);pointer-events:all}
-.subj-inner{
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:16px;padding:14px 16px;
-  cursor:default;
-  transition:background .3s,border-color .3s,transform .3s;
-  white-space:nowrap;
-}
-.subj-inner:hover{background:rgba(255,255,255,.14);transform:scale(1.08)}
-.subj-icon{font-size:1.8rem;margin-bottom:6px;display:block}
-.subj-name{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;margin-bottom:4px}
-.subj-desc{font-size:.68rem;color:var(--dim);line-height:1.4}
+    .dot:hover::after {
+      opacity: 1
+    }
 
-/* SVG connector lines */
-#connector-svg{position:absolute;inset:0;pointer-events:none;z-index:1}
+    .dot.on {
+      background: var(--gold);
+      transform: scale(1.6);
+      border-color: var(--gold);
+      box-shadow: 0 0 12px rgba(240, 192, 64, .5)
+    }
 
-/* positions for 4 subjects around center */
-/* top: biology; right: physics; bottom-right: math; left: literature */
-#sj-bio{top:5%;left:10%;transition-delay:.1s}
-#sj-phys{top:5%;right:8%;transition-delay:.2s}
-#sj-lit{bottom:8%;left:8%;transition-delay:.3s}
-#sj-math{bottom:8%;right:8%;transition-delay:.4s}
+    #deck {
+      position: fixed;
+      inset: 0;
+      z-index: 10
+    }
 
-.click-hint{font-size:.72rem;color:rgba(245,240,232,.3);font-weight:600;letter-spacing:1px;margin-top:8px;opacity:1;transition:opacity .5s}
-.click-hint.hidden{opacity:0}
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 55px 90px 55px 100px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none
+    }
 
-/* ══ SLIDE 7 — КАРТИНКИ ══ */
-#s7{background:linear-gradient(150deg,#0f1020 0%,#08080f 100%)}
-.items-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;max-width:900px}
-.item-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:26px 20px;text-align:center;cursor:default;
-  transform:translateY(50px) scale(.9);opacity:0;transition:all .55s;position:relative;overflow:hidden}
-.item-card.go{transform:translateY(0) scale(1);opacity:1}
-.item-card:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);transform:translateY(-6px)!important}
-.item-emoji{font-size:3rem;margin-bottom:12px;display:block;animation:none}
-.item-card.go .item-emoji{animation:bounceIn .6s cubic-bezier(.34,1.56,.64,1) both}
-@keyframes bounceIn{0%{transform:scale(0) rotate(-10deg)}70%{transform:scale(1.15) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
-.item-card:nth-child(1) .item-emoji{animation-delay:.1s}
-.item-card:nth-child(2) .item-emoji{animation-delay:.2s}
-.item-card:nth-child(3) .item-emoji{animation-delay:.3s}
-.item-card:nth-child(4) .item-emoji{animation-delay:.4s}
-.item-name{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;margin-bottom:6px}
-.item-sub{font-size:.72rem;color:var(--dim);line-height:1.5}
-.item-bar{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 18px 18px;transform:scaleX(0);transform-origin:left;transition:transform .7s .35s}
-.item-card.go .item-bar{transform:scaleX(1)}
-.item-card:nth-child(1) .item-bar{background:var(--green)}
-.item-card:nth-child(2) .item-bar{background:var(--gold)}
-.item-card:nth-child(3) .item-bar{background:var(--teal)}
-.item-card:nth-child(4) .item-bar{background:var(--purple)}
-.s7sub{margin-top:16px;font-size:.8rem;color:rgba(245,240,232,.35);font-style:italic;max-width:800px;opacity:0;transition:opacity .8s .5s}
-.s7sub.go{opacity:1}
+    .slide.current {
+      opacity: 1;
+      pointer-events: all
+    }
 
-/* ══ SLIDE 8 — ПЛЮС/МИНУС ══ */
-#s8{background:linear-gradient(150deg,#0d0818 0%,#08080f 100%)}
-.pmi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:860px}
-.pmi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:26px 22px;position:relative;overflow:hidden;cursor:default;
-  transform:translateY(60px);opacity:0;transition:all .55s}
-.pmi.go{transform:translateY(0);opacity:1}
-.pmi:hover{border-color:rgba(255,255,255,.2);transform:translateY(-6px)!important;box-shadow:0 22px 55px rgba(0,0,0,.5)}
-.pmi-sym{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;margin-bottom:10px;display:block;line-height:1}
-.pmi:nth-child(1) .pmi-sym{color:var(--green)}
-.pmi:nth-child(2) .pmi-sym{color:var(--rust)}
-.pmi:nth-child(3) .pmi-sym{color:var(--gold)}
-.pmi-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:8px}
-.pmi:nth-child(1) .pmi-title{color:var(--green)}
-.pmi:nth-child(2) .pmi-title{color:var(--rust)}
-.pmi:nth-child(3) .pmi-title{color:var(--gold)}
-.pmi-desc{font-size:.76rem;color:var(--dim);line-height:1.65}
-.pmi-bar{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 18px 18px;transform:scaleX(0);transform-origin:left;transition:transform .7s .35s}
-.pmi.go .pmi-bar{transform:scaleX(1)}
-.pmi:nth-child(1) .pmi-bar{background:linear-gradient(90deg,var(--green),transparent)}
-.pmi:nth-child(2) .pmi-bar{background:linear-gradient(90deg,var(--rust),transparent)}
-.pmi:nth-child(3) .pmi-bar{background:linear-gradient(90deg,var(--gold),transparent)}
+    .stag {
+      font-size: .6rem;
+      font-weight: 800;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px
+    }
 
-/* ══ SLIDE 9 — ФИНАЛ ══ */
-#s9{background:radial-gradient(ellipse 100% 100% at 50% 100%,#0d1a10 0%,#08080f 60%)}
-.final-wrap{max-width:780px}
-.final-quote{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;font-style:italic;line-height:1.35;color:var(--cream);
-  opacity:0;transform:translateY(30px);transition:all .9s .2s cubic-bezier(.22,1,.36,1)}
-.final-quote.go{opacity:1;transform:translateY(0)}
-.final-quote em{color:var(--green);font-style:normal}
-.final-line{width:0;height:3px;background:linear-gradient(90deg,var(--green),var(--teal),transparent);margin:24px 0;border-radius:2px;transition:width 1s .8s}
-.final-line.go{width:100%}
-.final-meta{opacity:0;transform:translateY(20px);transition:all .7s 1s}
-.final-meta.go{opacity:1;transform:translateY(0)}
-.final-chip{display:inline-block;background:rgba(78,203,113,.1);border:1px solid rgba(78,203,113,.3);border-radius:8px;padding:8px 16px;font-size:.7rem;font-weight:800;color:var(--green)}
-.final-sub{font-size:.78rem;color:rgba(245,240,232,.3);margin-top:10px}
+    .sh {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      max-width: 780px
+    }
 
-/* ══ SCROLL HINT ══ */
-#hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:800;display:flex;flex-direction:column;align-items:center;gap:5px;opacity:.5;transition:opacity .4s;pointer-events:none}
-#hint span{font-size:.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
-.arr{width:16px;height:16px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);animation:ab 1.4s ease-in-out infinite}
-@keyframes ab{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(5px)}}
-#hint.gone{opacity:0}
+    .sh em {
+      color: var(--teal);
+      font-style: normal
+    }
 
-@media(max-width:700px){
-  .slide{padding:45px 20px}
-  #nav{display:none}.s1ap{display:none}.s1h{font-size:2.6rem}
-  .fc{height:200px}.pmi-grid{grid-template-columns:1fr}
-  .apple-stage{height:340px}
-}
-</style>
+    /* ══ SLIDE 1 — HERO ══ */
+    #s1 {
+      background: transparent;
+      align-items: flex-start
+    }
+
+    .s1ap {
+      position: absolute;
+      right: 7%;
+      top: 50%;
+      transform: translateY(-50%) scale(.4) rotate(-30deg);
+      opacity: 0;
+      transition: transform 1s .6s cubic-bezier(.34, 1.56, .64, 1), opacity .8s .6s
+    }
+
+    .s1ap.go {
+      transform: translateY(-50%) scale(1) rotate(0deg);
+      opacity: 1
+    }
+
+    .s1ap .em {
+      font-size: clamp(8rem, 13vw, 14rem);
+      animation: wob 5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 50px rgba(240, 192, 64, .25))
+    }
+
+    @keyframes wob {
+      from {
+        transform: translateY(0) rotate(-4deg)
+      }
+
+      to {
+        transform: translateY(-18px) rotate(4deg)
+      }
+    }
+
+    .s1tg {
+      font-size: .65rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all .7s .1s
+    }
+
+    .s1tg.go {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .s1h {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6.5vw, 5.6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      max-width: 800px;
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: all .8s .3s cubic-bezier(.22, 1, .36, 1)
+    }
+
+    .s1h.go {
+      opacity: 1;
+      transform: translateX(0)
+    }
+
+    .s1h .hl {
+      color: var(--gold);
+      font-style: italic;
+      display: inline-block;
+      position: relative
+    }
+
+    .s1h .hl::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      height: 3px;
+      background: var(--gold);
+      width: 0;
+      border-radius: 2px;
+      transition: width 1s 1.2s
+    }
+
+    .s1h .hl.go::after {
+      width: 100%
+    }
+
+    .s1sb {
+      margin-top: 14px;
+      font-size: .95rem;
+      font-weight: 500;
+      line-height: 1.65;
+      color: var(--dim);
+      max-width: 540px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all .7s .6s
+    }
+
+    .s1sb.go {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .s1sb strong {
+      color: var(--teal)
+    }
+
+    .s1ch {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all .7s .8s
+    }
+
+    .s1ch.go {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .chip {
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 60px;
+      padding: 6px 14px;
+      font-size: .7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .25s;
+      cursor: default
+    }
+
+    .chip:hover {
+      background: rgba(240, 192, 64, .14);
+      border-color: var(--gold)
+    }
+
+    .s1tm {
+      display: flex;
+      gap: 11px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all .7s 1s
+    }
+
+    .s1tm.go {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .tb {
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-size: .74rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: default;
+      transition: all .3s
+    }
+
+    .tb:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(240, 192, 64, .15)
+    }
+
+    /* ══ SLIDE 2 — КОМАНДА ══ */
+    #s2 {
+      background: linear-gradient(150deg, #0d0d20 0%, #08080f 100%)
+    }
+
+    .roles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      max-width: 920px
+    }
+
+    .rc {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 18px;
+      padding: 22px 18px;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      transform: translateY(50px) scale(.94);
+      opacity: 0;
+      transition: transform .55s, opacity .55s, box-shadow .3s, border-color .3s
+    }
+
+    .rc.go {
+      transform: translateY(0) scale(1);
+      opacity: 1
+    }
+
+    .rc:hover {
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .4);
+      border-color: rgba(255, 255, 255, .2);
+      transform: translateY(-5px) !important
+    }
+
+    .rcgl {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      opacity: 0;
+      transition: opacity .4s;
+      pointer-events: none
+    }
+
+    .rc:hover .rcgl {
+      opacity: 1
+    }
+
+    .rc:nth-child(1) .rcgl {
+      background: radial-gradient(circle at 30% 20%, rgba(240, 192, 64, .15), transparent 55%)
+    }
+
+    .rc:nth-child(2) .rcgl {
+      background: radial-gradient(circle at 30% 20%, rgba(0, 201, 177, .15), transparent 55%)
+    }
+
+    .rc:nth-child(3) .rcgl {
+      background: radial-gradient(circle at 30% 20%, rgba(255, 78, 66, .15), transparent 55%)
+    }
+
+    .rc:nth-child(4) .rcgl {
+      background: radial-gradient(circle at 30% 20%, rgba(155, 89, 245, .15), transparent 55%)
+    }
+
+    .rcic {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      display: block
+    }
+
+    .rcnm {
+      font-family: 'Playfair Display', serif;
+      font-size: .98rem;
+      font-weight: 700;
+      margin-bottom: 6px
+    }
+
+    .rcds {
+      font-size: .75rem;
+      color: var(--dim);
+      line-height: 1.6
+    }
+
+    .rcbr {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 0 0 18px 18px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .6s .3s
+    }
+
+    .rc.go .rcbr {
+      transform: scaleX(1)
+    }
+
+    .rc:nth-child(1) .rcbr {
+      background: var(--gold)
+    }
+
+    .rc:nth-child(2) .rcbr {
+      background: var(--teal)
+    }
+
+    .rc:nth-child(3) .rcbr {
+      background: var(--rust)
+    }
+
+    .rc:nth-child(4) .rcbr {
+      background: var(--purple)
+    }
+
+    /* ══ SLIDE 3 — ИДЕЯ ══ */
+    #s3 {
+      background: linear-gradient(140deg, #001a17 0%, #08080f 100%)
+    }
+
+    .bq {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      font-style: italic;
+      line-height: 1.55;
+      max-width: 740px;
+      border-left: 4px solid var(--teal);
+      padding-left: 26px;
+      margin: 14px 0 28px;
+      transform: translateX(-40px);
+      opacity: 0;
+      transition: all .8s .25s cubic-bezier(.22, 1, .36, 1)
+    }
+
+    .bq.go {
+      transform: translateX(0);
+      opacity: 1
+    }
+
+    .pairs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 820px
+    }
+
+    .pair {
+      background: rgba(0, 201, 177, .08);
+      border: 1px solid rgba(0, 201, 177, .2);
+      border-radius: 60px;
+      padding: 8px 16px;
+      font-size: .78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transform: scale(.7) translateY(10px);
+      opacity: 0;
+      transition: all .4s;
+      cursor: default
+    }
+
+    .pair.go {
+      transform: scale(1) translateY(0);
+      opacity: 1
+    }
+
+    .pair:hover {
+      background: rgba(0, 201, 177, .18);
+      border-color: var(--teal);
+      transform: scale(1.06) !important
+    }
+
+    .plus {
+      color: var(--teal);
+      font-weight: 900;
+      font-size: 1.1rem
+    }
+
+    /* ══ SLIDE 4 — ЭТАПЫ ══ */
+    #s4 {
+      background: linear-gradient(150deg, #0c0c1e 0%, #08080f 100%)
+    }
+
+    .tl {
+      max-width: 860px
+    }
+
+    .ti {
+      display: flex;
+      gap: 0;
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all .6s
+    }
+
+    .ti.go {
+      opacity: 1;
+      transform: translateX(0)
+    }
+
+    .til {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 50px;
+      flex-shrink: 0
+    }
+
+    .tin {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .68rem;
+      font-weight: 800;
+      color: #000;
+      flex-shrink: 0
+    }
+
+    .ti:nth-child(1) .tin {
+      background: var(--gold)
+    }
+
+    .ti:nth-child(2) .tin {
+      background: var(--teal)
+    }
+
+    .ti:nth-child(3) .tin {
+      background: var(--rust)
+    }
+
+    .tiw {
+      width: 2px;
+      flex: 1;
+      min-height: 16px;
+      background: rgba(255, 255, 255, .08)
+    }
+
+    .tib {
+      padding: 0 0 22px 18px;
+      flex: 1
+    }
+
+    .titg {
+      display: inline-flex;
+      font-size: .58rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 3px;
+      margin-bottom: 7px
+    }
+
+    .ti:nth-child(1) .titg {
+      background: rgba(240, 192, 64, .12);
+      color: var(--gold)
+    }
+
+    .ti:nth-child(2) .titg {
+      background: rgba(0, 201, 177, .12);
+      color: var(--teal)
+    }
+
+    .ti:nth-child(3) .titg {
+      background: rgba(255, 78, 66, .12);
+      color: var(--rust)
+    }
+
+    .titl {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px
+    }
+
+    .titx {
+      font-size: .78rem;
+      color: var(--dim);
+      line-height: 1.8
+    }
+
+    .titx strong {
+      color: var(--cream)
+    }
+
+    /* ══ SLIDE 5 — ДРОБИ (3D FLIP) ══ */
+    #s5 {
+      background: radial-gradient(ellipse 80% 80% at 50% 40%, #0a1928 0%, #08080f 100%)
+    }
+
+    .fhint {
+      font-size: .72rem;
+      color: rgba(245, 240, 232, .3);
+      font-weight: 600;
+      margin-bottom: 16px
+    }
+
+    .fracs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+      max-width: 900px
+    }
+
+    .fc {
+      perspective: 900px;
+      cursor: pointer;
+      height: 220px;
+      opacity: 0;
+      transform: translateY(40px) rotateX(18deg);
+      transition: opacity .5s, transform .5s
+    }
+
+    .fc.go {
+      opacity: 1;
+      transform: translateY(0) rotateX(0)
+    }
+
+    .fcin {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform .75s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .fc.fl .fcin {
+      transform: rotateY(180deg)
+    }
+
+    .fc:hover:not(.fl) .fcin {
+      transform: rotateY(8deg) rotateX(-4deg) scale(1.03)
+    }
+
+    .ff,
+    .fb {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 24px 22px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, .1)
+    }
+
+    .ff {
+      background: rgba(255, 255, 255, .05)
+    }
+
+    .fb {
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(5, 20, 30, .95)
+    }
+
+    .fc:nth-child(1) .fb {
+      border-color: var(--teal)
+    }
+
+    .fc:nth-child(2) .fb {
+      border-color: var(--gold)
+    }
+
+    .fc:nth-child(3) .fb {
+      border-color: var(--rust)
+    }
+
+    .fcg {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .4s
+    }
+
+    .fc:hover .fcg,
+    .fc.fl .fcg {
+      opacity: 1
+    }
+
+    .fc:nth-child(1) .fcg {
+      background: radial-gradient(circle at 40% 0%, rgba(0, 201, 177, .2), transparent 55%)
+    }
+
+    .fc:nth-child(2) .fcg {
+      background: radial-gradient(circle at 40% 0%, rgba(240, 192, 64, .2), transparent 55%)
+    }
+
+    .fc:nth-child(3) .fcg {
+      background: radial-gradient(circle at 40% 0%, rgba(255, 78, 66, .2), transparent 55%)
+    }
+
+    .fn {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 900;
+      line-height: 1;
+      display: inline-block
+    }
+
+    .fn.pop {
+      animation: npop .5s cubic-bezier(.34, 1.56, .64, 1)
+    }
+
+    @keyframes npop {
+      0% {
+        transform: scale(.4);
+        opacity: 0
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .fc:nth-child(1) .fn {
+      color: var(--teal)
+    }
+
+    .fc:nth-child(2) .fn {
+      color: var(--gold)
+    }
+
+    .fc:nth-child(3) .fn {
+      color: var(--rust)
+    }
+
+    .fr {
+      font-size: .86rem;
+      font-weight: 700;
+      color: var(--cream)
+    }
+
+    .fhi {
+      font-size: .68rem;
+      color: rgba(245, 240, 232, .35)
+    }
+
+    .bl {
+      font-size: .57rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 11px
+    }
+
+    .fc:nth-child(1) .bl {
+      color: var(--teal)
+    }
+
+    .fc:nth-child(2) .bl {
+      color: var(--gold)
+    }
+
+    .fc:nth-child(3) .bl {
+      color: var(--rust)
+    }
+
+    .brow {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: .76rem;
+      line-height: 1.5
+    }
+
+    .ok {
+      font-weight: 600
+    }
+
+    .fc:nth-child(1) .ok {
+      color: var(--teal)
+    }
+
+    .fc:nth-child(2) .ok {
+      color: var(--gold)
+    }
+
+    .fc:nth-child(3) .ok {
+      color: var(--rust)
+    }
+
+    .no {
+      color: #ff7070;
+      text-decoration: line-through;
+      opacity: .7
+    }
+
+    .bm {
+      margin-top: 9px;
+      padding-top: 9px;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      font-size: .68rem;
+      color: rgba(245, 240, 232, .35)
+    }
+
+    .fvy {
+      margin-top: 14px;
+      max-width: 800px;
+      font-size: .78rem;
+      color: rgba(245, 240, 232, .35);
+      line-height: 1.7;
+      font-style: italic;
+      opacity: 0;
+      transition: opacity .8s .4s
+    }
+
+    .fvy.go {
+      opacity: 1
+    }
+
+    /* ══ SLIDE 6 — ЯБЛОКО ИНТЕРАКТИВ ══ */
+    #s6 {
+      background: radial-gradient(ellipse 90% 90% at 50% 50%, #0d1a10 0%, #08080f 100%)
+    }
+
+    .apple-stage {
+      position: relative;
+      width: 100%;
+      max-width: 760px;
+      height: 380px;
+      margin-top: 10px
+    }
+
+    /* центральное яблоко */
+    .center-apple {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 5rem;
+      cursor: pointer;
+      transition: transform .6s cubic-bezier(.34, 1.56, .64, 1);
+      filter: drop-shadow(0 0 30px rgba(78, 203, 113, .4));
+      animation: none;
+      z-index: 10;
+      user-select: none;
+      text-align: center;
+    }
+
+    .center-apple.show {
+      transform: translate(-50%, -50%) scale(1)
+    }
+
+    .center-apple.pulse {
+      animation: applePulse 2s ease-in-out infinite
+    }
+
+    @keyframes applePulse {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 20px rgba(78, 203, 113, .4))
+      }
+
+      50% {
+        filter: drop-shadow(0 0 50px rgba(78, 203, 113, .8))
+      }
+    }
+
+    /* Apple on Books */
+    /* Apple on Books - Premium SVG */
+    .apple-books-root {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .apple-books-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.5));
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .center-apple:hover .apple-books-svg {
+      transform: scale(1.05);
+    }
+
+    .apple-label {
+      font-size: .7rem;
+      font-weight: 700;
+      color: rgba(78, 203, 113, .7);
+      text-align: center;
+      letter-spacing: 2px;
+      margin-top: 8px
+    }
+
+    /* предмет-узел */
+    .subj {
+      position: absolute;
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity .5s, transform .5s cubic-bezier(.34, 1.56, .64, 1);
+      pointer-events: none;
+      text-align: center;
+      z-index: 5;
+    }
+
+    .subj.show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: all
+    }
+
+    .subj-inner {
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 16px;
+      padding: 14px 16px;
+      cursor: default;
+      transition: background .3s, border-color .3s, transform .3s;
+      white-space: nowrap;
+    }
+
+    .subj-inner:hover {
+      background: rgba(255, 255, 255, .14);
+      transform: scale(1.08)
+    }
+
+    .subj-icon {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+      display: block
+    }
+
+    .subj-name {
+      font-family: 'Playfair Display', serif;
+      font-size: .88rem;
+      font-weight: 700;
+      margin-bottom: 4px
+    }
+
+    .subj-desc {
+      font-size: .68rem;
+      color: var(--dim);
+      line-height: 1.4
+    }
+
+    /* SVG connector lines */
+    #connector-svg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1
+    }
+
+    /* positions for 4 subjects around center */
+    /* top: biology; right: physics; bottom-right: math; left: literature */
+    #sj-bio {
+      top: 5%;
+      left: 10%;
+      transition-delay: .1s
+    }
+
+    #sj-phys {
+      top: 5%;
+      right: 8%;
+      transition-delay: .2s
+    }
+
+    #sj-lit {
+      bottom: 8%;
+      left: 8%;
+      transition-delay: .3s
+    }
+
+    #sj-math {
+      bottom: 8%;
+      right: 8%;
+      transition-delay: .4s
+    }
+
+    .click-hint {
+      font-size: .72rem;
+      color: rgba(245, 240, 232, .3);
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-top: 8px;
+      opacity: 1;
+      transition: opacity .5s
+    }
+
+    .click-hint.hidden {
+      opacity: 0
+    }
+
+    /* ══ SLIDE 7 — КАРТИНКИ ══ */
+    #s7 {
+      background: linear-gradient(150deg, #0f1020 0%, #08080f 100%)
+    }
+
+    .items-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 18px;
+      max-width: 900px
+    }
+
+    .item-card {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 18px;
+      padding: 26px 20px;
+      text-align: center;
+      cursor: default;
+      transform: translateY(50px) scale(.9);
+      opacity: 0;
+      transition: all .55s;
+      position: relative;
+      overflow: hidden
+    }
+
+    .item-card.go {
+      transform: translateY(0) scale(1);
+      opacity: 1
+    }
+
+    .item-card:hover {
+      background: rgba(255, 255, 255, .1);
+      border-color: rgba(255, 255, 255, .25);
+      transform: translateY(-6px) !important
+    }
+
+    .item-emoji {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      display: block;
+      animation: none
+    }
+
+    .item-card.go .item-emoji {
+      animation: bounceIn .6s cubic-bezier(.34, 1.56, .64, 1) both
+    }
+
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0) rotate(-10deg)
+      }
+
+      70% {
+        transform: scale(1.15) rotate(3deg)
+      }
+
+      100% {
+        transform: scale(1) rotate(0)
+      }
+    }
+
+    .item-card:nth-child(1) .item-emoji {
+      animation-delay: .1s
+    }
+
+    .item-card:nth-child(2) .item-emoji {
+      animation-delay: .2s
+    }
+
+    .item-card:nth-child(3) .item-emoji {
+      animation-delay: .3s
+    }
+
+    .item-card:nth-child(4) .item-emoji {
+      animation-delay: .4s
+    }
+
+    .item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: .95rem;
+      font-weight: 700;
+      margin-bottom: 6px
+    }
+
+    .item-sub {
+      font-size: .72rem;
+      color: var(--dim);
+      line-height: 1.5
+    }
+
+    .item-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 0 0 18px 18px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .7s .35s
+    }
+
+    .item-card.go .item-bar {
+      transform: scaleX(1)
+    }
+
+    .item-card:nth-child(1) .item-bar {
+      background: var(--green)
+    }
+
+    .item-card:nth-child(2) .item-bar {
+      background: var(--gold)
+    }
+
+    .item-card:nth-child(3) .item-bar {
+      background: var(--teal)
+    }
+
+    .item-card:nth-child(4) .item-bar {
+      background: var(--purple)
+    }
+
+    .s7sub {
+      margin-top: 16px;
+      font-size: .8rem;
+      color: rgba(245, 240, 232, .35);
+      font-style: italic;
+      max-width: 800px;
+      opacity: 0;
+      transition: opacity .8s .5s
+    }
+
+    .s7sub.go {
+      opacity: 1
+    }
+
+    /* ══ SLIDE 8 — ПЛЮС/МИНУС ══ */
+    #s8 {
+      background: linear-gradient(150deg, #0d0818 0%, #08080f 100%)
+    }
+
+    .pmi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      max-width: 860px
+    }
+
+    .pmi {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 18px;
+      padding: 26px 22px;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      transform: translateY(60px);
+      opacity: 0;
+      transition: all .55s
+    }
+
+    .pmi.go {
+      transform: translateY(0);
+      opacity: 1
+    }
+
+    .pmi:hover {
+      border-color: rgba(255, 255, 255, .2);
+      transform: translateY(-6px) !important;
+      box-shadow: 0 22px 55px rgba(0, 0, 0, .5)
+    }
+
+    .pmi-sym {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      display: block;
+      line-height: 1
+    }
+
+    .pmi:nth-child(1) .pmi-sym {
+      color: var(--green)
+    }
+
+    .pmi:nth-child(2) .pmi-sym {
+      color: var(--rust)
+    }
+
+    .pmi:nth-child(3) .pmi-sym {
+      color: var(--gold)
+    }
+
+    .pmi-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px
+    }
+
+    .pmi:nth-child(1) .pmi-title {
+      color: var(--green)
+    }
+
+    .pmi:nth-child(2) .pmi-title {
+      color: var(--rust)
+    }
+
+    .pmi:nth-child(3) .pmi-title {
+      color: var(--gold)
+    }
+
+    .pmi-desc {
+      font-size: .76rem;
+      color: var(--dim);
+      line-height: 1.65
+    }
+
+    .pmi-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 0 0 18px 18px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .7s .35s
+    }
+
+    .pmi.go .pmi-bar {
+      transform: scaleX(1)
+    }
+
+    .pmi:nth-child(1) .pmi-bar {
+      background: linear-gradient(90deg, var(--green), transparent)
+    }
+
+    .pmi:nth-child(2) .pmi-bar {
+      background: linear-gradient(90deg, var(--rust), transparent)
+    }
+
+    .pmi:nth-child(3) .pmi-bar {
+      background: linear-gradient(90deg, var(--gold), transparent)
+    }
+
+    /* ══ SLIDE 9 — ФИНАЛ ══ */
+    #s9 {
+      background: radial-gradient(ellipse 100% 100% at 50% 100%, #0d1a10 0%, #08080f 60%)
+    }
+
+    .final-wrap {
+      max-width: 780px
+    }
+
+    .final-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.35;
+      color: var(--cream);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all .9s .2s cubic-bezier(.22, 1, .36, 1)
+    }
+
+    .final-quote.go {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .final-quote em {
+      color: var(--green);
+      font-style: normal
+    }
+
+    .final-line {
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--green), var(--teal), transparent);
+      margin: 24px 0;
+      border-radius: 2px;
+      transition: width 1s .8s
+    }
+
+    .final-line.go {
+      width: 100%
+    }
+
+    .final-meta {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all .7s 1s
+    }
+
+    .final-meta.go {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .final-chip {
+      display: inline-block;
+      background: rgba(78, 203, 113, .1);
+      border: 1px solid rgba(78, 203, 113, .3);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: .7rem;
+      font-weight: 800;
+      color: var(--green)
+    }
+
+    .final-sub {
+      font-size: .78rem;
+      color: rgba(245, 240, 232, .3);
+      margin-top: 10px
+    }
+
+    /* ══ SCROLL HINT ══ */
+    #hint {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 800;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      opacity: .5;
+      transition: opacity .4s;
+      pointer-events: none
+    }
+
+    #hint span {
+      font-size: .58rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold)
+    }
+
+    .arr {
+      width: 16px;
+      height: 16px;
+      border-right: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+      transform: rotate(45deg);
+      animation: ab 1.4s ease-in-out infinite
+    }
+
+    @keyframes ab {
+
+      0%,
+      100% {
+        transform: rotate(45deg) translateY(0)
+      }
+
+      50% {
+        transform: rotate(45deg) translateY(5px)
+      }
+    }
+
+    #hint.gone {
+      opacity: 0
+    }
+
+    @media(max-width:700px) {
+      .slide {
+        padding: 45px 20px
+      }
+
+      #nav {
+        display: none
+      }
+
+      .s1ap {
+        display: none
+      }
+
+      .s1h {
+        font-size: 2.6rem
+      }
+
+      .fc {
+        height: 200px
+      }
+
+      .pmi-grid {
+        grid-template-columns: 1fr
+      }
+
+      .apple-stage {
+        height: 340px
+      }
+    }
+  </style>
 </head>
+
 <body>
-<canvas id="cv"></canvas>
-<div id="pbar"></div>
-<nav id="nav">
-  <div class="dot on"  data-t="Начало"   onclick="goTo(0)"></div>
-  <div class="dot"     data-t="Команда"  onclick="goTo(1)"></div>
-  <div class="dot"     data-t="Идея"     onclick="goTo(2)"></div>
-  <div class="dot"     data-t="Этапы"    onclick="goTo(3)"></div>
-  <div class="dot"     data-t="Дроби"    onclick="goTo(4)"></div>
-  <div class="dot"     data-t="Яблоко"   onclick="goTo(5)"></div>
-  <div class="dot"     data-t="Примеры"  onclick="goTo(6)"></div>
-  <div class="dot"     data-t="+/−/?"    onclick="goTo(7)"></div>
-  <div class="dot"     data-t="Финал"    onclick="goTo(8)"></div>
-</nav>
+  <canvas id="cv"></canvas>
+  <div id="pbar"></div>
+  <nav id="nav">
+    <div class="dot on" data-t="Начало" onclick="goTo(0)"></div>
+    <div class="dot" data-t="Команда" onclick="goTo(1)"></div>
+    <div class="dot" data-t="Идея" onclick="goTo(2)"></div>
+    <div class="dot" data-t="Дроби" onclick="goTo(3)"></div>
+    <div class="dot" data-t="Яблоко" onclick="goTo(4)"></div>
+    <div class="dot" data-t="Примеры" onclick="goTo(5)"></div>
+    <div class="dot" data-t="+/−/?" onclick="goTo(6)"></div>
+    <div class="dot" data-t="Финал" onclick="goTo(7)"></div>
+  </nav>
 
-<div id="deck">
+  <div id="deck">
 
-<!-- ══ S1 HERO ══ -->
-<section class="slide" id="s1">
-  <div class="s1ap"><div class="em">🍎</div></div>
-  <div class="s1tg">✦ Мастер-класс · Успенский район · 2026</div>
-  <h1 class="s1h">Teach &amp; Talk:<br><span class="hl">Предметный</span> микс</h1>
-  <p class="s1sb">Тема: <strong>«Дробные числительные: смысл, чтение, произношение»</strong><br>Межпредметный урок · Педагоги · 30 минут</p>
-  <div class="s1ch">
-    <div class="chip">⏱ 30 минут</div>
-    <div class="chip">👩‍🏫 Педагоги</div>
-    <div class="chip">🏫 ШОШ им. М. Маметовой</div>
-    <div class="chip">📍 Успенский район</div>
-  </div>
-  <div class="s1tm">
-    <div class="tb">📐 Математик</div>
-    <div class="tb">📖 Филолог</div>
-    <div class="tb">🏛️ Историк</div>
-    <div class="tb">🧩 Учитель нач. кл.</div>
-  </div>
-</section>
-
-<!-- ══ S2 КОМАНДА ══ -->
-<section class="slide" id="s2">
-  <div class="stag">Слайд 2 · 0:15–0:30</div>
-  <h2 class="sh">Команда <em>предметного</em> микса</h2>
-  <div class="roles">
-    <div class="rc"><div class="rcgl"></div><span class="rcic">📐</span><div class="rcnm">Математик</div><div class="rcds">Отвечает за точность и визуальное оформление. Показывает структуру дроби.</div><div class="rcbr"></div></div>
-    <div class="rc"><div class="rcgl"></div><span class="rcic">📖</span><div class="rcnm">Филолог</div><div class="rcds">Объясняет идеи словами. Раскрывает языковую форму дробных числительных.</div><div class="rcbr"></div></div>
-    <div class="rc"><div class="rcgl"></div><span class="rcic">🧩</span><div class="rcnm">Учитель нач. кл.</div><div class="rcds">Превращает сложные идеи в понятные задания для учащихся.</div><div class="rcbr"></div></div>
-    <div class="rc"><div class="rcgl"></div><span class="rcic">🏛️</span><div class="rcnm">Историк</div><div class="rcds">Показывает связь с жизнью через реальные контексты и примеры.</div><div class="rcbr"></div></div>
-  </div>
-</section>
-
-<!-- ══ S3 ИДЕЯ ══ -->
-<section class="slide" id="s3">
-  <div class="stag">Слайд 3 · 0:30–3:00</div>
-  <h2 class="sh">В школе предметы <em>разделены</em>.<br>В жизни — нет.</h2>
-  <blockquote class="bq">«Задачи приходят без подписи предмета» — важно учить видеть связи между дисциплинами.</blockquote>
-  <p style="font-size:.63rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,240,232,.25);margin-bottom:13px">Примеры межпредметных пар</p>
-  <div class="pairs">
-    <div class="pair">🧬 Биология <span class="plus">+</span> География</div>
-    <div class="pair">📜 История <span class="plus">+</span> Литература</div>
-    <div class="pair">🎨 Математика <span class="plus">+</span> Искусство</div>
-    <div class="pair">⚡ Физика <span class="plus">+</span> Физкультура</div>
-    <div class="pair">✍️ Математика <span class="plus">+</span> Русский язык</div>
-  </div>
-</section>
-
-<!-- ══ S4 ЭТАПЫ ══ -->
-<section class="slide" id="s4">
-  <div class="stag">Слайд 4 · 3:00–13:00</div>
-  <h2 class="sh">Три этапа <em>мастер-класса</em></h2>
-  <div class="tl">
-    <div class="ti"><div class="til"><div class="tin">1</div><div class="tiw"></div></div><div class="tib"><div class="titg">⏱ 0–5 мин · Speed-dating</div><div class="titl">Быстрое знакомство</div><div class="titx">Участники в парах отвечают: <strong>«Какой предмет?»</strong> и <strong>«Трудности с дробями?»</strong> — 2–3 смены партнёра.</div></div></div>
-    <div class="ti"><div class="til"><div class="tin">2</div><div class="tiw"></div></div><div class="tib"><div class="titg">⏱ 5–20 мин · Моделирование</div><div class="titl">Межпредметный урок</div><div class="titx"><strong>Филолог (5–12 мин):</strong> анализ дробей 3/5, 7/8, 1/2. Структура, ошибки.<br><strong>Математик (12–20 мин):</strong> дробь как часть целого. ¾ = 0,75 = 75%.</div></div></div>
-    <div class="ti"><div class="til"><div class="tin">3</div><div class="tiw" style="background:transparent"></div></div><div class="tib"><div class="titg">⏱ 20–30 мин · Синтез</div><div class="titl">Обмен «одной фишкой»</div><div class="titx">Произношение — показатель понимания. <strong>Каждый делится одним приёмом из практики.</strong></div></div></div>
-  </div>
-</section>
-
-<!-- ══ S5 ДРОБИ ══ -->
-<section class="slide" id="s5">
-  <div class="stag">Слайд 5 · Разбор дробей · 10–13 мин</div>
-  <h2 class="sh">Три дроби — <em>два взгляда</em></h2>
-  <p class="fhint">🃏 Нажмите на карточку — перевернётся и покажет анализ!</p>
-  <div class="fracs">
-    <div class="fc" onclick="flip(this)">
-      <div class="fcin">
-        <div class="ff"><div class="fcg"></div><div><div class="fn" id="fn1">³⁄₅</div></div><div><div class="fr">«три пятых»</div><div class="fhi">Правильная дробь · 3 из 5</div></div></div>
-        <div class="fb"><div class="bl">Языковой анализ</div><div class="brow"><span>«три» — количественное числительное</span><span class="ok">«пятых» — порядковое, род. пад., мн. ч. ✓</span><span class="no">«три пятые» ✗</span></div><div class="bm">Числитель &lt; знаменателя · меньше 1</div></div>
+    <!-- ══ S1 HERO ══ -->
+    <section class="slide" id="s1">
+      <div class="s1ap">
+        <div class="em">
+          <svg viewBox="0 0 100 100" style="width:1em;height:1em;fill:none;display:block">
+            <path d="M50 15 C30 15 15 30 15 55 C15 80 35 90 50 85 C65 90 85 80 85 55 C85 30 70 15 50 15"
+              fill="#ff4d4d" />
+            <path d="M50 20 C35 20 25 32 25 55 C25 75 40 82 50 78 C60 82 75 75 75 55 C75 32 65 20 50 20"
+              fill="#fff5e6" />
+            <ellipse cx="46" cy="55" rx="2.5" ry="4.5" fill="#3c2f2f" transform="rotate(-15 46 55)" />
+            <ellipse cx="54" cy="55" rx="2.5" ry="4.5" fill="#3c2f2f" transform="rotate(15 54 55)" />
+            <path d="M50 15 L50 6" stroke="#5d4037" stroke-width="4" stroke-linecap="round" />
+            <path d="M50 10 C50 10 58 0 68 5 C75 10 65 15 50 10" fill="#4caf50" />
+          </svg>
+        </div>
       </div>
-    </div>
-    <div class="fc" onclick="flip(this)">
-      <div class="fcin">
-        <div class="ff"><div class="fcg"></div><div><div class="fn" id="fn2">⁷⁄₈</div></div><div><div class="fr">«семь восьмых»</div><div class="fhi">Правильная дробь · близка к 1</div></div></div>
-        <div class="fb"><div class="bl">Языковой анализ</div><div class="brow"><span>«семь» — количественное числительное</span><span class="ok">«восьмых» — порядковое, род. пад., мн. ч. ✓</span><span class="no">«семь восьмые» ✗</span></div><div class="bm">7 из 8 частей · близка к единице</div></div>
+      <div class="s1tg">✦ Мастер-класс · Успенский район · 2026</div>
+      <h1 class="s1h">Teach &amp; Talk:<br><span class="hl">Предметный</span> микс</h1>
+      <p class="s1sb">Межпредметный урок · Педагоги · 30 минут</p>
+      <div class="s1ch">
+        <div class="chip">⏱ 30 минут</div>
+        <div class="chip">👩‍🏫 Педагоги</div>
+        <div class="chip">📍 Успенский район</div>
       </div>
-    </div>
-    <div class="fc" onclick="flip(this)">
-      <div class="fcin">
-        <div class="ff"><div class="fcg"></div><div><div class="fn" id="fn3">½</div></div><div><div class="fr">«одна вторая» ⚠️</div><div class="fhi">Особый случай! Знаменатель — ед. число</div></div></div>
-        <div class="fb"><div class="bl">⚠️ Особый случай!</div><div class="brow"><span>«одна» — количественное, ж.р.</span><span class="ok">«вторая» — порядковое, ед. ч. ✓</span><span class="no">«одна вторых» ✗</span></div><div class="bm">= 0,5 · одна часть → знаменатель в ед. числе</div></div>
+      <div class="s1tm">
+        <div class="tb">📐 Математик</div>
+        <div class="tb">📖 Филолог</div>
+        <div class="tb">🏛️ Историк</div>
+        <div class="tb">🧩 Учитель нач. кл.</div>
       </div>
-    </div>
+    </section>
+
+    <!-- ══ S2 КОМАНДА ══ -->
+    <section class="slide" id="s2">
+      <div class="stag">Слайд 2 · 0:15–0:30</div>
+      <h2 class="sh">Команда <em>предметного</em> микса</h2>
+      <div class="roles">
+        <div class="rc">
+          <div class="rcgl"></div><span class="rcic">📐</span>
+          <div class="rcnm">Математик</div>
+          <div class="rcds">Отвечает за точность и визуальное оформление. Показывает структуру дроби.</div>
+          <div class="rcbr"></div>
+        </div>
+        <div class="rc">
+          <div class="rcgl"></div><span class="rcic">📖</span>
+          <div class="rcnm">Филолог</div>
+          <div class="rcds">Объясняет идеи словами. Раскрывает языковую форму дробных числительных.</div>
+          <div class="rcbr"></div>
+        </div>
+        <div class="rc">
+          <div class="rcgl"></div><span class="rcic">🧩</span>
+          <div class="rcnm">Учитель нач. кл.</div>
+          <div class="rcds">Превращает сложные идеи в понятные задания для учащихся.</div>
+          <div class="rcbr"></div>
+        </div>
+        <div class="rc">
+          <div class="rcgl"></div><span class="rcic">🏛️</span>
+          <div class="rcnm">Историк</div>
+          <div class="rcds">Показывает связь с жизнью через реальные контексты и примеры.</div>
+          <div class="rcbr"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ S3 ИДЕЯ ══ -->
+    <section class="slide" id="s3">
+      <div class="stag">Слайд 3 · 0:30–3:00</div>
+      <h2 class="sh">В школе предметы <em>разделены</em>.<br>В жизни — нет.</h2>
+      <blockquote class="bq">«Задачи приходят без подписи предмета» — важно учить видеть связи между дисциплинами.
+      </blockquote>
+      <p
+        style="font-size:.63rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,240,232,.25);margin-bottom:13px">
+        Примеры межпредметных пар</p>
+      <div class="pairs">
+        <div class="pair">🧬 Биология <span class="plus">+</span> География</div>
+        <div class="pair">📜 История <span class="plus">+</span> Литература</div>
+        <div class="pair">🎨 Математика <span class="plus">+</span> Искусство</div>
+        <div class="pair">⚡ Физика <span class="plus">+</span> Физкультура</div>
+        <div class="pair">✍️ Математика <span class="plus">+</span> Русский язык</div>
+      </div>
+    </section>
+
+    <!-- ══ S4 ЭТАПЫ ══ -->
+
+
+    <!-- ══ S4 ДРОБИ ══ -->
+    <section class="slide" id="s4">
+      <div class="stag">Слайд 4 · Разбор дробей</div>
+      <h2 class="sh">Три дроби — <em>два взгляда</em></h2>
+      <p class="fhint">🃏 Нажмите на карточку — перевернётся и покажет анализ!</p>
+      <div class="fracs">
+        <div class="fc" onclick="flip(this)">
+          <div class="fcin">
+            <div class="ff">
+              <div class="fcg"></div>
+              <div>
+                <div class="fn" id="fn1">³⁄₅</div>
+              </div>
+              <div>
+                <div class="fr">«три пятых»</div>
+                <div class="fhi">Правильная дробь · 3 из 5</div>
+              </div>
+            </div>
+            <div class="fb">
+              <div class="bl">Языковой анализ</div>
+              <div class="brow"><span>«три» — количественное числительное</span><span class="ok">«пятых» — порядковое,
+                  род. пад., мн. ч. ✓</span><span class="no">«три пятые» ✗</span></div>
+              <div class="bm">Числитель &lt; знаменателя · меньше 1</div>
+            </div>
+          </div>
+        </div>
+        <div class="fc" onclick="flip(this)">
+          <div class="fcin">
+            <div class="ff">
+              <div class="fcg"></div>
+              <div>
+                <div class="fn" id="fn2">⁷⁄₈</div>
+              </div>
+              <div>
+                <div class="fr">«семь восьмых»</div>
+                <div class="fhi">Правильная дробь · близка к 1</div>
+              </div>
+            </div>
+            <div class="fb">
+              <div class="bl">Языковой анализ</div>
+              <div class="brow"><span>«семь» — количественное числительное</span><span class="ok">«восьмых» —
+                  порядковое, род. пад., мн. ч. ✓</span><span class="no">«семь восьмые» ✗</span></div>
+              <div class="bm">7 из 8 частей · близка к единице</div>
+            </div>
+          </div>
+        </div>
+        <div class="fc" onclick="flip(this)">
+          <div class="fcin">
+            <div class="ff">
+              <div class="fcg"></div>
+              <div>
+                <div class="fn" id="fn3">½</div>
+              </div>
+              <div>
+                <div class="fr">«одна вторая» ⚠️</div>
+                <div class="fhi">Особый случай! Знаменатель — ед. число</div>
+              </div>
+            </div>
+            <div class="fb">
+              <div class="bl">⚠️ Особый случай!</div>
+              <div class="brow"><span>«одна» — количественное, ж.р.</span><span class="ok">«вторая» — порядковое, ед. ч.
+                  ✓</span><span class="no">«одна вторых» ✗</span></div>
+              <div class="bm">= 0,5 · одна часть → знаменатель в ед. числе</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="fvy" id="vyvod">✦ Вывод: во всех дробях, кроме ½, знаменатель стоит в родительном падеже множественного
+        числа.</p>
+    </section>
+
+    <!-- ══ S5 ЯБЛОКО ══ -->
+    <section class="slide" id="s5">
+      <div class="stag">Слайд 5</div>
+      <h2 class="sh">Одно яблоко — <em>четыре предмета</em></h2>
+      <p class="click-hint" id="applehint">👆 Нажмите на яблоко, чтобы увидеть связи!</p>
+
+      <div class="apple-stage" id="apple-stage">
+        <!-- SVG lines -->
+        <svg id="connector-svg" viewBox="0 0 760 380" preserveAspectRatio="none"></svg>
+
+        <!-- Central apple on books (Premium SVG) -->
+        <div class="center-apple" id="center-apple" onclick="explodeApple()">
+          <div class="apple-books-root">
+            <svg class="apple-books-svg" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="appleGradS5" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#ff8a80" />
+                  <stop offset="100%" style="stop-color:#d50000" />
+                </linearGradient>
+              </defs>
+              <!-- Books Stack -->
+              <rect x="20" y="65" width="60" height="10" rx="2" fill="#1565c0" transform="rotate(-3 50 70)" />
+              <rect x="22" y="58" width="60" height="10" rx="2" fill="#c62828" transform="rotate(2 50 63)" />
+              <rect x="20" y="51" width="60" height="10" rx="2" fill="#2e7d32" transform="rotate(-1 50 56)" />
+              <!-- Apple sitting on top -->
+              <path d="M50 58 C38 58 30 48 30 38 C30 28 38 22 50 24 C62 22 70 28 70 38 C70 48 62 58 50 58"
+                fill="url(#appleGradS5)" />
+              <path d="M50 24 L50 16" stroke="#5d4037" stroke-width="3" stroke-linecap="round" />
+              <path d="M50 20 C50 20 58 12 68 16 C72 20 62 24 50 20" fill="#388e3c" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Subject nodes -->
+        <div class="subj" id="sj-bio">
+          <div class="subj-inner">
+            <span class="subj-icon">🧬</span>
+            <div class="subj-name" style="color:#4ecb71">Биология</div>
+            <div class="subj-desc">Строение плода,<br>семена, клетки</div>
+          </div>
+        </div>
+
+        <div class="subj" id="sj-phys">
+          <div class="subj-inner">
+            <span class="subj-icon">⚡</span>
+            <div class="subj-name" style="color:var(--gold)">Физика</div>
+            <div class="subj-desc">Закон Ньютона,<br>падение тела</div>
+          </div>
+        </div>
+
+        <div class="subj" id="sj-lit">
+          <div class="subj-inner">
+            <span class="subj-icon">📚</span>
+            <div class="subj-name" style="color:var(--purple)">Литература</div>
+            <div class="subj-desc">Яблоко раздора,<br>символ в текстах</div>
+          </div>
+        </div>
+
+        <div class="subj" id="sj-math">
+          <div class="subj-inner">
+            <span class="subj-icon">📐</span>
+            <div class="subj-name" style="color:var(--teal)">Математика</div>
+            <div class="subj-desc">Доли и пропорции,<br>дробные числа</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ S6 КАРТИНКИ ══ -->
+    <section class="slide" id="s6">
+      <div class="stag">Слайд 6</div>
+      <h2 class="sh">Найдите <em>межпредметные</em> связи</h2>
+      <div class="items-row">
+        <div class="item-card">
+          <div class="apple-books-root" style="width: 80px; height: 80px; margin: 0 auto 12px;">
+            <svg class="apple-books-svg" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="appleGradS6" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#ff8a80" />
+                  <stop offset="100%" style="stop-color:#d50000" />
+                </linearGradient>
+              </defs>
+              <!-- Books Stack -->
+              <rect x="20" y="65" width="60" height="10" rx="2" fill="#1565c0" transform="rotate(-3 50 70)" />
+              <rect x="22" y="58" width="60" height="10" rx="2" fill="#c62828" transform="rotate(2 50 63)" />
+              <rect x="20" y="51" width="60" height="10" rx="2" fill="#2e7d32" transform="rotate(-1 50 56)" />
+              <!-- Apple sitting on top -->
+              <path d="M50 58 C38 58 30 48 30 38 C30 28 38 22 50 24 C62 22 70 28 70 38 C70 48 62 58 50 58"
+                fill="url(#appleGradS6)" />
+              <path d="M50 24 L50 16" stroke="#5d4037" stroke-width="3" stroke-linecap="round" />
+              <path d="M50 20 C50 20 58 12 68 16 C72 20 62 24 50 20" fill="#388e3c" />
+            </svg>
+          </div>
+          <div class="item-name">Яблоко</div>
+          <div class="item-bar"></div>
+        </div>
+        <div class="item-card">
+          <span class="item-emoji">🍫</span>
+          <div class="item-name">Шоколад</div>
+          <div class="item-bar"></div>
+        </div>
+        <div class="item-card">
+          <span class="item-emoji">🌉</span>
+          <div class="item-name">Мост</div>
+          <div class="item-bar"></div>
+        </div>
+        <div class="item-card">
+          <span class="item-emoji">📱</span>
+          <div class="item-name">Телефон</div>
+          <div class="item-bar"></div>
+        </div>
+      </div>
+      <p class="s7sub" id="s7sub">Каждый предмет — это лишь один взгляд на одно и то же явление.</p>
+    </section>
+
+    <!-- ══ S7 ПЛЮС-МИНУС-ИНТЕРЕСНО ══ -->
+    <section class="slide" id="s7">
+      <div class="stag">Слайд 7 · Рефлексия</div>
+      <h2 class="sh">Плюс — Минус — <em>Интересно</em></h2>
+      <div class="pmi-grid">
+        <div class="pmi">
+          <span class="pmi-sym">+</span>
+          <div class="pmi-title">Плюс</div>
+          <div class="pmi-desc">Что понравилось? Что было ценным? Какие идеи берёте с собой в практику?</div>
+          <div class="pmi-bar"></div>
+        </div>
+        <div class="pmi">
+          <span class="pmi-sym">−</span>
+          <div class="pmi-title">Минус</div>
+          <div class="pmi-desc">Что вызвало вопросы? Что показалось сложным или спорным?</div>
+          <div class="pmi-bar"></div>
+        </div>
+        <div class="pmi">
+          <span class="pmi-sym">?</span>
+          <div class="pmi-title">Интересно</div>
+          <div class="pmi-desc">Что хотите узнать глубже? Какие новые идеи возникли в процессе?</div>
+          <div class="pmi-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ S8 ФИНАЛ ══ -->
+    <section class="slide" id="s8">
+      <div class="stag">Слайд 8 · Финал</div>
+      <div class="final-wrap">
+        <div class="final-quote" id="fq">
+          «В школе предметы разделены — <em>в жизни работают в одной команде</em>»
+        </div>
+        <div class="final-line" id="fl"></div>
+        <div class="final-meta" id="fm">
+          <div class="final-sub">Teach &amp; Talk: Предметный микс · Межпредметный мастер-класс</div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /deck -->
+  <div id="hint"><span>листайте</span>
+    <div class="arr"></div>
   </div>
-  <p class="fvy" id="vyvod">✦ Вывод: во всех дробях, кроме ½, знаменатель стоит в родительном падеже множественного числа.</p>
-</section>
 
-<!-- ══ S6 ЯБЛОКО ══ -->
-<section class="slide" id="s6">
-  <div class="stag">Слайд 6 · 13:00–15:00</div>
-  <h2 class="sh">Одно яблоко — <em>четыре предмета</em></h2>
-  <p class="click-hint" id="applehint">👆 Нажмите на яблоко, чтобы увидеть связи!</p>
+  <script>
+    /* ════════ CANVAS PARTICLES ════════ */
+    const cv = document.getElementById('cv'), cx = cv.getContext('2d');
+    let W, H, mx = -999, my = -999;
+    const SY = ['½', '⅓', '⅔', '¾', '3/5', '7/8', '÷', '×', '=', '+', '∑', 'π', '√', '%', '🍎'];
+    function resize() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight }
+    resize(); window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY });
+    class P {
+      constructor() { this.x = Math.random() * W; this.y = Math.random() * H; this.vx = (Math.random() - .5) * .42; this.vy = (Math.random() - .5) * .42; this.r = Math.random() * 1.8 + .4; this.a = Math.random() * .26 + .04; this.sym = Math.random() > .65 ? SY[Math.floor(Math.random() * SY.length)] : null; this.fs = Math.random() * 12 + 8; this.c = Math.random() > .5 ? '240,192,64' : '0,201,177'; this.ph = Math.random() * Math.PI * 2 }
+      tick() { this.x += this.vx; this.y += this.vy; this.ph += .016; const dx = this.x - mx, dy = this.y - my, d = Math.hypot(dx, dy); if (d < 85) { const f = (85 - d) / 85 * 2.2; this.x += dx / d * f; this.y += dy / d * f } if (this.x < -60) this.x = W + 60; if (this.x > W + 60) this.x = -60; if (this.y < -60) this.y = H + 60; if (this.y > H + 60) this.y = -60 }
+      draw() { const a = this.a * (.7 + .3 * Math.sin(this.ph)); if (this.sym) { cx.font = this.fs + 'px Playfair Display'; cx.fillStyle = 'rgba(' + this.c + ',' + a + ')'; cx.fillText(this.sym, this.x, this.y) } else { cx.beginPath(); cx.arc(this.x, this.y, this.r, 0, Math.PI * 2); cx.fillStyle = 'rgba(' + this.c + ',' + a + ')'; cx.fill() } }
+    }
+    const ps = []; for (let i = 0; i < 110; i++)ps.push(new P());
+    function web() { for (let i = 0; i < ps.length; i++)for (let j = i + 1; j < ps.length; j++) { const d = Math.hypot(ps[i].x - ps[j].x, ps[i].y - ps[j].y); if (d < 100) { cx.beginPath(); cx.moveTo(ps[i].x, ps[i].y); cx.lineTo(ps[j].x, ps[j].y); cx.strokeStyle = 'rgba(240,192,64,' + (0.05 * (1 - d / 100)) + ')'; cx.lineWidth = .4; cx.stroke() } } }
+    (function loop() { cx.clearRect(0, 0, W, H); web(); ps.forEach(p => { p.tick(); p.draw() }); requestAnimationFrame(loop) })();
 
-  <div class="apple-stage" id="apple-stage">
-    <!-- SVG lines -->
-    <svg id="connector-svg" viewBox="0 0 760 380" preserveAspectRatio="none"></svg>
+    /* ════════ SLIDE SYSTEM ════════ */
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dots = document.querySelectorAll('.dot');
+    const pbar = document.getElementById('pbar');
+    let cur = 0, busy = false;
 
-    <!-- Central apple -->
-    <div class="center-apple" id="center-apple" onclick="explodeApple()">
-      <div>🍎</div>
-      <div class="apple-label">ЯБЛОКО</div>
-    </div>
+    function upd(i) {
+      pbar.style.width = ((i / (slides.length - 1)) * 100) + '%';
+      dots.forEach((d, j) => d.classList.toggle('on', j === i));
+      document.getElementById('hint').classList.toggle('gone', i > 0);
+    }
 
-    <!-- Subject nodes -->
-    <div class="subj" id="sj-bio">
-      <div class="subj-inner">
-        <span class="subj-icon">🧬</span>
-        <div class="subj-name" style="color:#4ecb71">Биология</div>
-        <div class="subj-desc">Строение плода,<br>семена, клетки</div>
-      </div>
-    </div>
+    function animIn(idx) {
+      const sl = slides[idx];
+      const s = (sel, d, st) => sl.querySelectorAll(sel).forEach((el, i) => setTimeout(() => el.classList.add('go'), d + i * st));
+      if (idx === 0) {
+        setTimeout(() => sl.querySelector('.s1tg').classList.add('go'), 80);
+        setTimeout(() => { const h = sl.querySelector('.s1h'); h.classList.add('go'); h.querySelector('.hl').classList.add('go') }, 220);
+        setTimeout(() => sl.querySelector('.s1ap').classList.add('go'), 100);
+        setTimeout(() => sl.querySelector('.s1sb').classList.add('go'), 500);
+        setTimeout(() => sl.querySelector('.s1ch').classList.add('go'), 700);
+        setTimeout(() => sl.querySelector('.s1tm').classList.add('go'), 900);
+        return;
+      }
+      if (idx === 1) s('.rc', 80, 130);
+      if (idx === 2) { setTimeout(() => sl.querySelector('.bq').classList.add('go'), 150); s('.pair', 320, 90) }
+      if (idx === 3) {
+        s('.fc', 80, 160);
+        setTimeout(() => { ['fn1', 'fn2', 'fn3'].forEach((id, i) => setTimeout(() => { const el = document.getElementById(id); el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop') }, 200 + i * 200)) }, 200);
+        setTimeout(() => document.getElementById('vyvod').classList.add('go'), 700);
+      }
+      if (idx === 4) {
+        // apple slide
+        appleExploded = false;
+        setTimeout(() => { document.getElementById('center-apple').classList.add('show', 'pulse') }, 200);
+      }
+      if (idx === 5) { s('.item-card', 80, 130); setTimeout(() => document.getElementById('s7sub').classList.add('go'), 700) }
+      if (idx === 6) s('.pmi', 80, 160);
+      if (idx === 7) {
+        setTimeout(() => document.getElementById('fq').classList.add('go'), 150);
+        setTimeout(() => document.getElementById('fl').classList.add('go'), 700);
+        setTimeout(() => document.getElementById('fm').classList.add('go'), 900);
+      }
+    }
 
-    <div class="subj" id="sj-phys">
-      <div class="subj-inner">
-        <span class="subj-icon">⚡</span>
-        <div class="subj-name" style="color:var(--gold)">Физика</div>
-        <div class="subj-desc">Закон Ньютона,<br>падение тела</div>
-      </div>
-    </div>
+    function resetSl(idx) {
+      const sl = slides[idx];
+      const sels = ['.s1tg', '.s1h', '.s1h .hl', '.s1ap', '.s1sb', '.s1ch', '.s1tm', '.rc', '.bq', '.pair', '.ti', '.fc', '.fvy', '.trk', '.ri', '.s7ft', '.item-card', '.pmi', '#s7sub', '#fq', '#fl', '#fm'];
+      sels.forEach(sel => sl.querySelectorAll(sel).forEach(el => el.classList.remove('go')));
+      sl.querySelectorAll('.fc').forEach(c => c.classList.remove('fl'));
+      // reset apple
+      if (idx === 4) {
+        document.getElementById('center-apple').classList.remove('show', 'pulse');
+        ['sj-bio', 'sj-phys', 'sj-lit', 'sj-math'].forEach(id => document.getElementById(id).classList.remove('show'));
+        document.getElementById('connector-svg').innerHTML = '';
+        document.getElementById('applehint').classList.remove('hidden');
+        appleExploded = false;
+      }
+    }
 
-    <div class="subj" id="sj-lit">
-      <div class="subj-inner">
-        <span class="subj-icon">📚</span>
-        <div class="subj-name" style="color:var(--purple)">Литература</div>
-        <div class="subj-desc">Яблоко раздора,<br>символ в текстах</div>
-      </div>
-    </div>
+    function goTo(next) {
+      if (busy || next === cur || next < 0 || next >= slides.length) return;
+      busy = true;
+      const prev = cur, dir = next > prev ? 1 : -1;
+      const tx = dir > 0 ? '-102%' : '102%';
+      const inX = dir > 0 ? '102%' : '-102%';
+      slides[next].style.transform = 'translateX(' + inX + ')';
+      slides[next].style.opacity = '1';
+      slides[next].classList.add('current');
+      slides[next].offsetHeight;
+      slides[prev].style.transition = 'transform .65s cubic-bezier(.77,0,.18,1),opacity .5s';
+      slides[next].style.transition = 'transform .65s cubic-bezier(.77,0,.18,1),opacity .5s';
+      slides[prev].style.transform = 'translateX(' + tx + ')';
+      slides[prev].style.opacity = '0';
+      slides[next].style.transform = 'translateX(0)';
+      slides[next].style.opacity = '1';
+      setTimeout(() => {
+        slides[prev].classList.remove('current');
+        slides[prev].style.transform = '';
+        slides[prev].style.opacity = '';
+        slides[prev].style.transition = '';
+        slides[next].style.transition = '';
+        resetSl(prev);
+        animIn(next);
+        cur = next; upd(next); busy = false;
+      }, 680);
+    }
 
-    <div class="subj" id="sj-math">
-      <div class="subj-inner">
-        <span class="subj-icon">📐</span>
-        <div class="subj-name" style="color:var(--teal)">Математика</div>
-        <div class="subj-desc">Доли и пропорции,<br>дробные числа</div>
-      </div>
-    </div>
-  </div>
-</section>
+    slides[0].classList.add('current');
+    slides[0].style.opacity = '1';
+    animIn(0); upd(0);
 
-<!-- ══ S7 КАРТИНКИ ══ -->
-<section class="slide" id="s7">
-  <div class="stag">Слайд 7 · 15:00–25:00</div>
-  <h2 class="sh">Найдите <em>межпредметные связи</em></h2>
-  <div class="items-row">
-    <div class="item-card">
-      <span class="item-emoji">🍎</span>
-      <div class="item-name">Яблоко</div>
-      <div class="item-sub">Биология · Физика · Литература · Математика</div>
-      <div class="item-bar"></div>
-    </div>
-    <div class="item-card">
-      <span class="item-emoji">🍫</span>
-      <div class="item-name">Шоколад</div>
-      <div class="item-sub">Химия · География · История · Экономика</div>
-      <div class="item-bar"></div>
-    </div>
-    <div class="item-card">
-      <span class="item-emoji">🌉</span>
-      <div class="item-name">Мост</div>
-      <div class="item-sub">Физика · Математика · История · Архитектура</div>
-      <div class="item-bar"></div>
-    </div>
-    <div class="item-card">
-      <span class="item-emoji">📱</span>
-      <div class="item-name">Телефон</div>
-      <div class="item-sub">Физика · Химия · Информатика · Обществознание</div>
-      <div class="item-bar"></div>
-    </div>
-  </div>
-  <p class="s7sub" id="s7sub">Каждый предмет — это лишь один взгляд на одно и то же явление.</p>
-</section>
+    let wacc = 0, wt;
+    window.addEventListener('wheel', e => { clearTimeout(wt); wacc += e.deltaY; wt = setTimeout(() => { if (Math.abs(wacc) > 55) goTo(cur + (wacc > 0 ? 1 : -1)); wacc = 0 }, 80) }, { passive: true });
+    window.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') goTo(cur + 1); if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') goTo(cur - 1) });
+    let tx0 = 0, ty0 = 0;
+    window.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY }, { passive: true });
+    window.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - tx0, dy = e.changedTouches[0].clientY - ty0; if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40) goTo(cur + (dy < 0 ? 1 : -1)) }, { passive: true });
 
-<!-- ══ S8 ПЛЮС-МИНУС-ИНТЕРЕСНО ══ -->
-<section class="slide" id="s8">
-  <div class="stag">Слайд 8 · 28:30 · Рефлексия</div>
-  <h2 class="sh">Плюс — Минус — <em>Интересно</em></h2>
-  <div class="pmi-grid">
-    <div class="pmi">
-      <span class="pmi-sym">+</span>
-      <div class="pmi-title">Плюс</div>
-      <div class="pmi-desc">Что понравилось? Что было ценным? Какие идеи берёте с собой в практику?</div>
-      <div class="pmi-bar"></div>
-    </div>
-    <div class="pmi">
-      <span class="pmi-sym">−</span>
-      <div class="pmi-title">Минус</div>
-      <div class="pmi-desc">Что вызвало вопросы? Что показалось сложным или спорным?</div>
-      <div class="pmi-bar"></div>
-    </div>
-    <div class="pmi">
-      <span class="pmi-sym">?</span>
-      <div class="pmi-title">Интересно</div>
-      <div class="pmi-desc">Что хотите узнать глубже? Какие новые идеи возникли в процессе?</div>
-      <div class="pmi-bar"></div>
-    </div>
-  </div>
-</section>
+    function flip(c) { c.classList.toggle('fl') }
 
-<!-- ══ S9 ФИНАЛ ══ -->
-<section class="slide" id="s9">
-  <div class="stag">Слайд 9 · Финал</div>
-  <div class="final-wrap">
-    <div class="final-quote" id="fq">
-      «В школе предметы разделены — <em>в жизни работают в одной команде</em>»
-    </div>
-    <div class="final-line" id="fl"></div>
-    <div class="final-meta" id="fm">
-      <div class="final-chip">ШОШ им. М. Маметовой · Успенский р-он · 2026</div>
-      <div class="final-sub">Teach &amp; Talk: Предметный микс · Межпредметный мастер-класс</div>
-    </div>
-  </div>
-</section>
+    /* ════════ APPLE EXPLOSION ════════ */
+    let appleExploded = false;
+    function explodeApple() {
+      if (appleExploded) return;
+      appleExploded = true;
+      const apple = document.getElementById('center-apple');
+      apple.classList.remove('pulse');
+      apple.style.transition = 'transform .5s cubic-bezier(.34,1.56,.64,1)';
+      apple.style.transform = 'translate(-50%,-50%) scale(1.3)';
+      setTimeout(() => { apple.style.transform = 'translate(-50%,-50%) scale(1)' }, 500);
+      document.getElementById('applehint').classList.add('hidden');
 
-</div><!-- /deck -->
-<div id="hint"><span>листайте</span><div class="arr"></div></div>
+      // show subjects with stagger
+      const ids = ['sj-bio', 'sj-phys', 'sj-lit', 'sj-math'];
+      ids.forEach((id, i) => setTimeout(() => document.getElementById(id).classList.add('show'), i * 180 + 200));
 
-<script>
-/* ════════ CANVAS PARTICLES ════════ */
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-let W,H,mx=-999,my=-999;
-const SY=['½','⅓','⅔','¾','3/5','7/8','÷','×','=','+','∑','π','√','%','🍎'];
-function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}
-resize();window.addEventListener('resize',resize);
-window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
-class P{
-  constructor(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.42;this.vy=(Math.random()-.5)*.42;this.r=Math.random()*1.8+.4;this.a=Math.random()*.26+.04;this.sym=Math.random()>.65?SY[Math.floor(Math.random()*SY.length)]:null;this.fs=Math.random()*12+8;this.c=Math.random()>.5?'240,192,64':'0,201,177';this.ph=Math.random()*Math.PI*2}
-  tick(){this.x+=this.vx;this.y+=this.vy;this.ph+=.016;const dx=this.x-mx,dy=this.y-my,d=Math.hypot(dx,dy);if(d<85){const f=(85-d)/85*2.2;this.x+=dx/d*f;this.y+=dy/d*f}if(this.x<-60)this.x=W+60;if(this.x>W+60)this.x=-60;if(this.y<-60)this.y=H+60;if(this.y>H+60)this.y=-60}
-  draw(){const a=this.a*(.7+.3*Math.sin(this.ph));if(this.sym){cx.font=this.fs+'px Playfair Display';cx.fillStyle='rgba('+this.c+','+a+')';cx.fillText(this.sym,this.x,this.y)}else{cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fillStyle='rgba('+this.c+','+a+')';cx.fill()}}
-}
-const ps=[];for(let i=0;i<110;i++)ps.push(new P());
-function web(){for(let i=0;i<ps.length;i++)for(let j=i+1;j<ps.length;j++){const d=Math.hypot(ps[i].x-ps[j].x,ps[i].y-ps[j].y);if(d<100){cx.beginPath();cx.moveTo(ps[i].x,ps[i].y);cx.lineTo(ps[j].x,ps[j].y);cx.strokeStyle='rgba(240,192,64,'+(0.05*(1-d/100))+')';cx.lineWidth=.4;cx.stroke()}}}
-(function loop(){cx.clearRect(0,0,W,H);web();ps.forEach(p=>{p.tick();p.draw()});requestAnimationFrame(loop)})();
+      // draw SVG lines after subjects appear
+      setTimeout(drawLines, 900);
+    }
 
-/* ════════ SLIDE SYSTEM ════════ */
-const slides=Array.from(document.querySelectorAll('.slide'));
-const dots=document.querySelectorAll('.dot');
-const pbar=document.getElementById('pbar');
-let cur=0,busy=false;
+    function drawLines() {
+      const svg = document.getElementById('connector-svg');
+      svg.innerHTML = '';
+      const stage = document.getElementById('apple-stage');
+      const stageRect = stage.getBoundingClientRect();
+      const apple = document.getElementById('center-apple');
+      const appleRect = apple.getBoundingClientRect();
+      const cx2 = (appleRect.left + appleRect.width / 2 - stageRect.left) / stageRect.width * 760;
+      const cy2 = (appleRect.top + appleRect.height / 2 - stageRect.top) / stageRect.height * 380;
 
-function upd(i){
-  pbar.style.width=((i/(slides.length-1))*100)+'%';
-  dots.forEach((d,j)=>d.classList.toggle('on',j===i));
-  document.getElementById('hint').classList.toggle('gone',i>0);
-}
-
-function animIn(idx){
-  const sl=slides[idx];
-  const s=(sel,d,st)=>sl.querySelectorAll(sel).forEach((el,i)=>setTimeout(()=>el.classList.add('go'),d+i*st));
-  if(idx===0){
-    setTimeout(()=>sl.querySelector('.s1tg').classList.add('go'),80);
-    setTimeout(()=>{const h=sl.querySelector('.s1h');h.classList.add('go');h.querySelector('.hl').classList.add('go')},220);
-    setTimeout(()=>sl.querySelector('.s1ap').classList.add('go'),100);
-    setTimeout(()=>sl.querySelector('.s1sb').classList.add('go'),500);
-    setTimeout(()=>sl.querySelector('.s1ch').classList.add('go'),700);
-    setTimeout(()=>sl.querySelector('.s1tm').classList.add('go'),900);
-    return;
-  }
-  if(idx===1)s('.rc',80,130);
-  if(idx===2){setTimeout(()=>sl.querySelector('.bq').classList.add('go'),150);s('.pair',320,90)}
-  if(idx===3)s('.ti',80,170);
-  if(idx===4){
-    s('.fc',80,160);
-    setTimeout(()=>{['fn1','fn2','fn3'].forEach((id,i)=>setTimeout(()=>{const el=document.getElementById(id);el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')},200+i*200))},200);
-    setTimeout(()=>document.getElementById('vyvod').classList.add('go'),700);
-  }
-  if(idx===5){
-    // apple slide
-    appleExploded=false;
-    setTimeout(()=>{document.getElementById('center-apple').classList.add('show','pulse')},200);
-  }
-  if(idx===6){s('.item-card',80,130);setTimeout(()=>document.getElementById('s7sub').classList.add('go'),700)}
-  if(idx===7)s('.pmi',80,160);
-  if(idx===8){
-    setTimeout(()=>document.getElementById('fq').classList.add('go'),150);
-    setTimeout(()=>document.getElementById('fl').classList.add('go'),700);
-    setTimeout(()=>document.getElementById('fm').classList.add('go'),900);
-  }
-}
-
-function resetSl(idx){
-  const sl=slides[idx];
-  const sels=['.s1tg','.s1h','.s1h .hl','.s1ap','.s1sb','.s1ch','.s1tm','.rc','.bq','.pair','.ti','.fc','.fvy','.trk','.ri','.s7ft','.item-card','.pmi','#s7sub','#fq','#fl','#fm'];
-  sels.forEach(sel=>sl.querySelectorAll(sel).forEach(el=>el.classList.remove('go')));
-  sl.querySelectorAll('.fc').forEach(c=>c.classList.remove('fl'));
-  // reset apple
-  if(idx===5){
-    document.getElementById('center-apple').classList.remove('show','pulse');
-    ['sj-bio','sj-phys','sj-lit','sj-math'].forEach(id=>document.getElementById(id).classList.remove('show'));
-    document.getElementById('connector-svg').innerHTML='';
-    document.getElementById('applehint').classList.remove('hidden');
-    appleExploded=false;
-  }
-}
-
-function goTo(next){
-  if(busy||next===cur||next<0||next>=slides.length)return;
-  busy=true;
-  const prev=cur,dir=next>prev?1:-1;
-  const tx=dir>0?'-102%':'102%';
-  const inX=dir>0?'102%':'-102%';
-  slides[next].style.transform='translateX('+inX+')';
-  slides[next].style.opacity='1';
-  slides[next].classList.add('current');
-  slides[next].offsetHeight;
-  slides[prev].style.transition='transform .65s cubic-bezier(.77,0,.18,1),opacity .5s';
-  slides[next].style.transition='transform .65s cubic-bezier(.77,0,.18,1),opacity .5s';
-  slides[prev].style.transform='translateX('+tx+')';
-  slides[prev].style.opacity='0';
-  slides[next].style.transform='translateX(0)';
-  slides[next].style.opacity='1';
-  setTimeout(()=>{
-    slides[prev].classList.remove('current');
-    slides[prev].style.transform='';
-    slides[prev].style.opacity='';
-    slides[prev].style.transition='';
-    slides[next].style.transition='';
-    resetSl(prev);
-    animIn(next);
-    cur=next;upd(next);busy=false;
-  },680);
-}
-
-slides[0].classList.add('current');
-slides[0].style.opacity='1';
-animIn(0);upd(0);
-
-let wacc=0,wt;
-window.addEventListener('wheel',e=>{clearTimeout(wt);wacc+=e.deltaY;wt=setTimeout(()=>{if(Math.abs(wacc)>55)goTo(cur+(wacc>0?1:-1));wacc=0},80)},{passive:true});
-window.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key===' ')goTo(cur+1);if(e.key==='ArrowUp'||e.key==='ArrowLeft')goTo(cur-1)});
-let tx0=0,ty0=0;
-window.addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;ty0=e.touches[0].clientY},{passive:true});
-window.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx0,dy=e.changedTouches[0].clientY-ty0;if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>40)goTo(cur+(dy<0?1:-1))},{passive:true});
-
-function flip(c){c.classList.toggle('fl')}
-
-/* ════════ APPLE EXPLOSION ════════ */
-let appleExploded=false;
-function explodeApple(){
-  if(appleExploded)return;
-  appleExploded=true;
-  const apple=document.getElementById('center-apple');
-  apple.classList.remove('pulse');
-  apple.style.transition='transform .5s cubic-bezier(.34,1.56,.64,1)';
-  apple.style.transform='translate(-50%,-50%) scale(1.3)';
-  setTimeout(()=>{apple.style.transform='translate(-50%,-50%) scale(1)'},500);
-  document.getElementById('applehint').classList.add('hidden');
-
-  // show subjects with stagger
-  const ids=['sj-bio','sj-phys','sj-lit','sj-math'];
-  ids.forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('show'),i*180+200));
-
-  // draw SVG lines after subjects appear
-  setTimeout(drawLines,900);
-}
-
-function drawLines(){
-  const svg=document.getElementById('connector-svg');
-  svg.innerHTML='';
-  const stage=document.getElementById('apple-stage');
-  const stageRect=stage.getBoundingClientRect();
-  const apple=document.getElementById('center-apple');
-  const appleRect=apple.getBoundingClientRect();
-  const cx2=(appleRect.left+appleRect.width/2-stageRect.left)/stageRect.width*760;
-  const cy2=(appleRect.top+appleRect.height/2-stageRect.top)/stageRect.height*380;
-
-  const colors={'sj-bio':'#4ecb71','sj-phys':'#f0c040','sj-lit':'#9b59f5','sj-math':'#00c9b1'};
-  ['sj-bio','sj-phys','sj-lit','sj-math'].forEach(id=>{
-    const el=document.getElementById(id);
-    const r=el.getBoundingClientRect();
-    const ex=(r.left+r.width/2-stageRect.left)/stageRect.width*760;
-    const ey=(r.top+r.height/2-stageRect.top)/stageRect.height*380;
-    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',cx2);line.setAttribute('y1',cy2);
-    line.setAttribute('x2',ex);line.setAttribute('y2',ey);
-    line.setAttribute('stroke',colors[id]);
-    line.setAttribute('stroke-width','1.5');
-    line.setAttribute('stroke-opacity','0.5');
-    line.setAttribute('stroke-dasharray','6 4');
-    const len=Math.hypot(ex-cx2,ey-cy2);
-    line.style.strokeDashoffset=len;
-    line.style.transition='stroke-dashoffset .8s ease';
-    svg.appendChild(line);
-    setTimeout(()=>{line.style.strokeDashoffset='0'},50);
-  });
-}
-</script>
+      const colors = { 'sj-bio': '#4ecb71', 'sj-phys': '#f0c040', 'sj-lit': '#9b59f5', 'sj-math': '#00c9b1' };
+      ['sj-bio', 'sj-phys', 'sj-lit', 'sj-math'].forEach(id => {
+        const el = document.getElementById(id);
+        const r = el.getBoundingClientRect();
+        const ex = (r.left + r.width / 2 - stageRect.left) / stageRect.width * 760;
+        const ey = (r.top + r.height / 2 - stageRect.top) / stageRect.height * 380;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', cx2); line.setAttribute('y1', cy2);
+        line.setAttribute('x2', ex); line.setAttribute('y2', ey);
+        line.setAttribute('stroke', colors[id]);
+        line.setAttribute('stroke-width', '1.5');
+        line.setAttribute('stroke-opacity', '0.5');
+        line.setAttribute('stroke-dasharray', '6 4');
+        const len = Math.hypot(ex - cx2, ey - cy2);
+        line.style.strokeDashoffset = len;
+        line.style.transition = 'stroke-dashoffset .8s ease';
+        svg.appendChild(line);
+        setTimeout(() => { line.style.strokeDashoffset = '0' }, 50);
+      });
+    }
+  </script>
 </body>
+
 </html>
